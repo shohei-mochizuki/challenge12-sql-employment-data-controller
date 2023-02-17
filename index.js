@@ -93,7 +93,7 @@ function reaction(data) {
   switch (data.action) {
     case "View all departments": 
       const viewDepartments = new Promise((resolve, reject) => {
-        db.query('SELECT * FROM department', function (err, results) {
+        db.query('SELECT department_id AS "Id", department_name AS "Department" FROM department', function (err, results) {
           if (results) {
             console.table(results);
             resolve(results);
@@ -109,11 +109,20 @@ function reaction(data) {
       break;
     // When 
     case "View all roles":
-      console.log("You'll see all roles soon")
-      db.query('SELECT * FROM role', function (err, results) {
-        console.log(results);
-      })
-      .then(() => init());
+      const viewRoles = new Promise((resolve, reject) => {
+        db.query('SELECT role_id AS "Id", role_title AS "Role", role_salary AS "Salary", department_name AS "Department" FROM role JOIN department ON role.department_id = department.department_id', function (err, results) {
+          if (results) {
+            console.table(results);
+            resolve(results);
+          } else {
+            console.log(err)
+            reject(err);
+          }
+        });
+      });
+      viewRoles.then(() => {
+        init();
+      });
       break;
     // When
     case "View all employees":
