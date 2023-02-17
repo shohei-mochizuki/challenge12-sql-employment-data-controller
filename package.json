@@ -1,0 +1,24 @@
+{
+  "name": "challenge10-oop-command-line-logo-maker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shohei-mochizuki/challenge10-oop-command-line-logo-maker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shohei-mochizuki/challenge10-oop-command-line-logo-maker/issues"
+  },
+  "homepage": "https://github.com/shohei-mochizuki/challenge10-oop-command-line-logo-maker#readme",
+  "dependencies": {
+    "inquirer": "^8.2.4",
+    "inquirer-maxlength-input-prompt": "^1.0.2"
+  }
+}
