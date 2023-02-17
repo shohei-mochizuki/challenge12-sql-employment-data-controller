@@ -96,7 +96,10 @@ function reaction(data) {
     // When 
     case "View all departments": 
       console.log("You'll see all departments soon")
-      init();
+      db.query('SELECT * FROM departments', function (err, results) {
+        console.log(results);
+      })
+      .then(init());
       break;
     // When 
     case "View all roles":
