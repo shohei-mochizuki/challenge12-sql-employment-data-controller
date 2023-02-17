@@ -152,6 +152,7 @@ function reaction(data) {
           // When
     case "Quit":
       console.log("Bye!")
+      return;
       break;
   }
 }
@@ -160,8 +161,16 @@ function reaction(data) {
 // Function to initialize app
 function init() {
   inquirer.prompt(questionInitial) // Prompt window shows up first
-  .then((res) => {
-    reaction(res);
+    .then((res) => {
+      if (res.action === "Quit") {
+        console.log("Bye!");
+        return "Bye";
+      } else {
+        reaction(res);
+      };
+    })
+    .catch((err) => {
+      console.error(err);
     })
 }
 
