@@ -14,13 +14,13 @@ VALUES ("HR Director", 150000, 1),
        ("Customer Support Specialist", 70000, 3);
 
 INSERT INTO employee (employee_firstname, employee_lastname, role_id, manager_id)
-VALUES ("Barack", "Obama", 1),
+VALUES ("Barack", "Obama", 1, NULL),
        ("Anna", "Smith", 2, 1),
        ("Adams", "Coen", 2, 1),
-       ("Bill", "Gates", 3),
-       ("Tim", "Cook" 4, 4),
-       ("Sundar", "Pichai" 5, 4),
-       ("Jack", "Dorsey" 6, 4),
-       ("Elon", "Musk" 7, 1),
+       ("Bill", "Gates", 3, 1),
+       ("Tim", "Cook", 4, 4),
+       ("Sundar", "Pichai", 5, 4),
+       ("Jack", "Dorsey", 6, 4),
+       ("Elon", "Musk", 7, 1),
        ("George", "Clooney", 8, 4),
        ("Natalie", "Portman", 8, 8);
