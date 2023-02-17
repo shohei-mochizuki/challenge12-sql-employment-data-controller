@@ -1,9 +1,21 @@
 // Include packages needed for this application
 const inquirer = require('inquirer');
 const MaxLengthInputPrompt = require('inquirer-maxlength-input-prompt'); // This is an add-on to limit the number of input letters
-const fs = require("fs");
+const mysql = require('mysql2');
+// const fs = require("fs");
 
 inquirer.registerPrompt('maxlength-input', MaxLengthInputPrompt) // This is an add-on to limit the number of input letters
+
+const db = mysql.createConnection(
+  {
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: 'employees_db'
+  },
+  console.log(`Connected to the employees_db database.`)
+);
+
 
 let listOptionsInitial = ["View all departments", 
 "View all roles", 
