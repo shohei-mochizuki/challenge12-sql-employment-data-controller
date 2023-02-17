@@ -118,7 +118,13 @@ function reaction(data) {
           // When
     case "Add a department":
       console.log("You'll be able to add a department soon")
-      init();
+      inquirer.prompt(questionAddDepartment)
+        .then((response) => {
+          db.query('INSERT INTO department (department_name) VALUES (?)', response.department, function (err, results) {
+            console.log(results);
+          })
+        })
+        .then (init());
       break;
           // When
     case "Add a role":
