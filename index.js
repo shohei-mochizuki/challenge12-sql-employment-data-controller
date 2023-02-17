@@ -5,7 +5,7 @@ const mysql = require('mysql2');
 
 inquirer.registerPrompt('maxlength-input', MaxLengthInputPrompt) // This is an add-on to limit the number of input letters
 
-const db = mysql.createConnection(
+let db = mysql.createConnection(
   {
     host: 'localhost',
     user: 'root',
@@ -15,7 +15,7 @@ const db = mysql.createConnection(
   console.log(`Connected to the employment_db database.`)
 );
 
-let listOptionsInitial = ["View all departments", 
+const listOptionsInitial = ["View all departments", 
 "View all roles", 
 "View all employees", 
 "Add a department", 
@@ -149,10 +149,9 @@ function reaction(data) {
       console.log("You'll be able to update an employee's role soon")
       .then(() => init());
       break;
-          // When
     case "Quit":
-      console.log("Bye!")
-      return;
+      console.log("Bye!");
+      db.end();
       break;
   }
 }
@@ -162,13 +161,8 @@ function reaction(data) {
 function init() {
   inquirer.prompt(questionInitial) // Prompt window shows up first
     .then((res) => {
-      if (res.action === "Quit") {
-        console.log("Bye!");
-        return "Bye";
-      } else {
         reaction(res);
-      };
-    })
+      })
     .catch((err) => {
       console.error(err);
     })
