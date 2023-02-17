@@ -2,7 +2,6 @@
 const inquirer = require('inquirer');
 const MaxLengthInputPrompt = require('inquirer-maxlength-input-prompt'); // This is an add-on to limit the number of input letters
 const mysql = require('mysql2');
-// const fs = require("fs");
 
 inquirer.registerPrompt('maxlength-input', MaxLengthInputPrompt) // This is an add-on to limit the number of input letters
 
@@ -16,7 +15,6 @@ const db = mysql.createConnection(
   console.log(`Connected to the employees_db database.`)
 );
 
-
 let listOptionsInitial = ["View all departments", 
 "View all roles", 
 "View all employees", 
@@ -26,9 +24,9 @@ let listOptionsInitial = ["View all departments",
 "Update an employee role",
 "Quit"];
 
-let listDepartments = [1, 2, 3];
-let listRoles = [1, 2, 3];
-let listEmployees = [1, 2, 3];
+let listDepartments = [];
+let listRoles = [];
+let listEmployees = [];
 
 // Create an array of questions for user input
 const questionInitial = [
@@ -90,13 +88,13 @@ const questionUpdateEmployee = [
   ];
 
 
-// Function to write SVG file
+// Function
 function reaction(data) {
   switch (data.action) {
     // When 
     case "View all departments": 
       console.log("You'll see all departments soon")
-      db.query('SELECT * FROM departments', function (err, results) {
+      db.query('SELECT * FROM department', function (err, results) {
         console.log(results);
       })
       .then(init());
@@ -104,11 +102,17 @@ function reaction(data) {
     // When 
     case "View all roles":
       console.log("You'll see all roles soon")
+      db.query('SELECT * FROM role', function (err, results) {
+        console.log(results);
+      })
       init();
       break;
     // When
     case "View all employees":
       console.log("You'll see all employees soon")
+      db.query('SELECT * FROM employee', function (err, results) {
+        console.log(results);
+      })
       init();
       break;
           // When
