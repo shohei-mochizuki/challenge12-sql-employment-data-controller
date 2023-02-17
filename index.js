@@ -15,9 +15,9 @@ let listOptionsInitial = ["View all departments",
 "Update an employee role",
 "Quit"];
 
-let listDepartments = [];
-let listRoles = [];
-let listEmployees = [];
+let listDepartments = [1, 2, 3];
+let listRoles = [1, 2, 3];
+let listEmployees = [1, 2, 3];
 
 // Create an array of questions for user input
 const questionInitial = [
@@ -84,43 +84,42 @@ function reaction(data) {
   switch (data.action) {
     // When 
     case "View all departments": 
-      fs.writeFile(fileName, (new shapeSvg.Circle(data.shape_color, data.font_color, data.characters)).createSvg(), 
-      (err) => err ? console.error(err) : console.log('Generated logo.svg'));
+      console.log("You'll see all departments soon")
+      init();
       break;
     // When 
     case "View all roles":
-      fs.writeFile(fileName, (new shapeSvg.Square(data.shape_color, data.font_color, data.characters)).createSvg(), 
-      (err) => err ? console.error(err) : console.log('Generated logo.svg'));
+      console.log("You'll see all departments soon")
+      init();
       break;
     // When
     case "View all employees":
-      fs.writeFile(fileName, (new shapeSvg.Triangle(data.shape_color, data.font_color, data.characters)).createSvg(), 
-      (err) => err ? console.error(err) : console.log('Generated logo.svg'));
+      console.log("You'll see all departments soon")
+      init();
       break;
           // When
     case "Add a department":
-      fs.writeFile(fileName, (new shapeSvg.Triangle(data.shape_color, data.font_color, data.characters)).createSvg(), 
-      (err) => err ? console.error(err) : console.log('Generated logo.svg'));
+      console.log("You'll see all departments soon")
+      init();
       break;
           // When
     case "Add a role":
-      fs.writeFile(fileName, (new shapeSvg.Triangle(data.shape_color, data.font_color, data.characters)).createSvg(), 
-      (err) => err ? console.error(err) : console.log('Generated logo.svg'));
+      console.log("You'll see all departments soon")
+      init();
       break;
           // When
     case "Add an employee":
-      fs.writeFile(fileName, (new shapeSvg.Triangle(data.shape_color, data.font_color, data.characters)).createSvg(), 
-      (err) => err ? console.error(err) : console.log('Generated logo.svg'));
+      console.log("You'll see all departments soon")
+      init();
       break;
           // When
     case "Update an employee role":
-      fs.writeFile(fileName, (new shapeSvg.Triangle(data.shape_color, data.font_color, data.characters)).createSvg(), 
-      (err) => err ? console.error(err) : console.log('Generated logo.svg'));
+      console.log("You'll see all departments soon")
+      init();
       break;
           // When
     case "Quit":
-      fs.writeFile(fileName, (new shapeSvg.Triangle(data.shape_color, data.font_color, data.characters)).createSvg(), 
-      (err) => err ? console.error(err) : console.log('Generated logo.svg'));
+      console.log("Bye!")
       break;
   }
 }
@@ -131,7 +130,7 @@ function init() {
   inquirer.prompt(questionInitial) // Prompt window shows up first
   .then((response) => {
     console.log(response);
-    // reaction(response);
+    reaction(response);
     }
   )
 }
