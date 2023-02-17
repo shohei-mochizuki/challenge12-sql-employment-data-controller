@@ -10,9 +10,9 @@ const db = mysql.createConnection(
     host: 'localhost',
     user: 'root',
     password: '',
-    database: 'employees_db'
+    database: 'employment_db'
   },
-  console.log(`Connected to the employees_db database.`)
+  console.log(`Connected to the employment_db database.`)
 );
 
 let listOptionsInitial = ["View all departments", 

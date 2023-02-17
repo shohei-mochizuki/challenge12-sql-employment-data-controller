@@ -19,6 +19,7 @@
   "homepage": "https://github.com/shohei-mochizuki/challenge10-oop-command-line-logo-maker#readme",
   "dependencies": {
     "inquirer": "^8.2.4",
-    "inquirer-maxlength-input-prompt": "^1.0.2"
+    "inquirer-maxlength-input-prompt": "^1.0.2",
+    "mysql2": "^2.2.5"
   }
 }
