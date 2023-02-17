@@ -2,7 +2,6 @@
 const inquirer = require('inquirer');
 const MaxLengthInputPrompt = require('inquirer-maxlength-input-prompt'); // This is an add-on to limit the number of input letters
 const fs = require("fs");
-const shapeSvg = require("./lib/shapes.js"); // Import shape classes ("Circle", "Square" and "Triangle")
 
 inquirer.registerPrompt('maxlength-input', MaxLengthInputPrompt) // This is an add-on to limit the number of input letters
 
@@ -89,32 +88,32 @@ function reaction(data) {
       break;
     // When 
     case "View all roles":
-      console.log("You'll see all departments soon")
+      console.log("You'll see all roles soon")
       init();
       break;
     // When
     case "View all employees":
-      console.log("You'll see all departments soon")
+      console.log("You'll see all employees soon")
       init();
       break;
           // When
     case "Add a department":
-      console.log("You'll see all departments soon")
+      console.log("You'll be able to add a department soon")
       init();
       break;
           // When
     case "Add a role":
-      console.log("You'll see all departments soon")
+      console.log("You'll be able to add a role soon")
       init();
       break;
           // When
     case "Add an employee":
-      console.log("You'll see all departments soon")
+      console.log("You'll be able to add an employee soon")
       init();
       break;
           // When
-    case "Update an employee role":
-      console.log("You'll see all departments soon")
+    case "Update an employee's role":
+      console.log("You'll be able to update an employee's role soon")
       init();
       break;
           // When
