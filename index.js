@@ -7,22 +7,115 @@ const shapeSvg = require("./lib/shapes.js"); // Import shape classes ("Circle", 
 inquirer.registerPrompt('maxlength-input', MaxLengthInputPrompt) // This is an add-on to limit the number of input letters
 
 // Create an array of questions for user input
-const questions = [
-{type: 'maxlength-input',
-message: 'What characters do you want to include in thd logo? (Up to 3 characters)',
-name: 'characters',
-maxLength: 3},
-{type: 'input',
-message: 'Which color do you want to use for the font? (Please type a color keyword or a hexadecimal number)',
-name: 'font_color'},
-{type: 'list',
-message: 'Choose a shape for your logo.',
-name: 'shape',
-choices: ["circle ○", "square □", "triangle △"]},
-{type: 'input',
-message: 'Which color do you want to use for the shape? (Please type a color keyword or a hexadecimal number)',
-name: 'shape_color'},
-];
+const questionInitial = [
+  {type: 'list',
+   message: 'What would you like to do?',
+   name: 'shape',
+   choices: 
+   ["View all departments", 
+   "View all roles", 
+   "View all employees", 
+   "Add a department", 
+   "Add a role", 
+   "Add an employee", 
+   "Update an employee role",
+   "Quit"]}
+  ];
+
+const questionAddDepartment = [
+  {type: 'maxlength-input',
+   message: 'What is the name of the department?',
+   name: 'new_department',
+   maxLength: 30},
+  ];
+
+const questionAddRole = [
+  {type: 'maxlength-input',
+    message: 'What is the title of the role?',
+    name: 'title',
+    maxLength: 30},
+  {type: 'input',
+   message: 'What is the salary of the role?',
+   name: 'salary'},
+  {type: 'list',
+   message: 'Which department does the role belong to?',
+   name: 'department',
+   choices: 
+   ["A", 
+   "B", 
+   "C", 
+   "D",
+   "E"]}
+  ];
+
+const questionAddEmployee = [
+  {type: 'maxlength-input',
+    message: 'What is the first name of the employee?',
+    name: 'title',
+    maxLength: 30},
+  {type: 'maxlength-input',
+    message: 'What is the last name of the employee?',
+    name: 'title',
+    maxLength: 30},
+  {type: 'list',
+    message: 'What is the role of the employee?',
+    name: 'department',
+    choices: 
+    ["A", 
+    "B", 
+    "C", 
+    "D",
+    "E"]},
+  {type: 'list',
+    message: 'Who is the manager of the employee?',
+    name: 'department',
+    choices: 
+    ["A", 
+    "B", 
+    "C", 
+    "D",
+    "E"]}
+  ];
+
+const questionUpdateEmployee = [
+  {type: 'list',
+    message: 'Whose role do you want to update?',
+    name: 'department',
+    choices: 
+    ["A", 
+    "B", 
+    "C", 
+    "D",
+    "E"]},
+  {type: 'list',
+    message: 'Which role do you want to assign the selected employee?',
+    name: 'department',
+    choices: 
+    ["A", 
+    "B", 
+    "C", 
+    "D",
+    "E"]},
+  ];
+
+
+
+
+// {type: 'maxlength-input',
+// message: 'What characters do you want to include in thd logo? (Up to 3 characters)',
+// name: 'characters',
+// maxLength: 3},
+// {type: 'input',
+// message: 'Which color do you want to use for the font? (Please type a color keyword or a hexadecimal number)',
+// name: 'font_color'},
+// {type: 'list',
+// message: 'Choose a shape for your logo.',
+// name: 'shape',
+// choices: ["circle ○", "square □", "triangle △"]},
+// {type: 'input',
+// message: 'Which color do you want to use for the shape? (Please type a color keyword or a hexadecimal number)',
+// name: 'shape_color'},
+// ];
 
 
 // Function to write SVG file
@@ -49,7 +142,7 @@ function createLogo(fileName, data) {
 
 // Function to initialize app
 function init() {
-  inquirer.prompt(questions) // Prompt window shows up first
+  inquirer.prompt(questionInitial) // Prompt window shows up first
   .then((response) => {
     createLogo("./examples/logo.svg", response); // Then logo.svg file will be created in the folder "examples"
     }
