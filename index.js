@@ -97,7 +97,7 @@ function reaction(data) {
       db.query('SELECT * FROM department', function (err, results) {
         console.log(results);
       })
-      .then(init());
+      .then(() => init());
       break;
     // When 
     case "View all roles":
@@ -105,7 +105,7 @@ function reaction(data) {
       db.query('SELECT * FROM role', function (err, results) {
         console.log(results);
       })
-      init();
+      .then(() => init());
       break;
     // When
     case "View all employees":
@@ -113,7 +113,7 @@ function reaction(data) {
       db.query('SELECT * FROM employee', function (err, results) {
         console.log(results);
       })
-      init();
+      .then(() => init());
       break;
           // When
     case "Add a department":
@@ -124,22 +124,22 @@ function reaction(data) {
             console.log(results);
           })
         })
-        .then (init());
+        .then(() => init());
       break;
           // When
     case "Add a role":
       console.log("You'll be able to add a role soon")
-      init();
+      .then(() => init());
       break;
           // When
     case "Add an employee":
       console.log("You'll be able to add an employee soon")
-      init();
+      .then(() => init());
       break;
           // When
     case "Update an employee's role":
       console.log("You'll be able to update an employee's role soon")
-      init();
+      .then(() => init());
       break;
           // When
     case "Quit":
