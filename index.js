@@ -6,20 +6,25 @@ const shapeSvg = require("./lib/shapes.js"); // Import shape classes ("Circle", 
 
 inquirer.registerPrompt('maxlength-input', MaxLengthInputPrompt) // This is an add-on to limit the number of input letters
 
+let listOptionsInitial = ["View all departments", 
+"View all roles", 
+"View all employees", 
+"Add a department", 
+"Add a role", 
+"Add an employee", 
+"Update an employee role",
+"Quit"];
+
+let listDepartments = [];
+let listRoles = [];
+let listEmployees = [];
+
 // Create an array of questions for user input
 const questionInitial = [
   {type: 'list',
    message: 'What would you like to do?',
    name: 'shape',
-   choices: 
-   ["View all departments", 
-   "View all roles", 
-   "View all employees", 
-   "Add a department", 
-   "Add a role", 
-   "Add an employee", 
-   "Update an employee role",
-   "Quit"]}
+   choices: listOptionsInitial}
   ];
 
 const questionAddDepartment = [
@@ -40,12 +45,7 @@ const questionAddRole = [
   {type: 'list',
    message: 'Which department does the role belong to?',
    name: 'department',
-   choices: 
-   ["A", 
-   "B", 
-   "C", 
-   "D",
-   "E"]}
+   choices: listDepartments}
   ];
 
 const questionAddEmployee = [
@@ -60,62 +60,23 @@ const questionAddEmployee = [
   {type: 'list',
     message: 'What is the role of the employee?',
     name: 'department',
-    choices: 
-    ["A", 
-    "B", 
-    "C", 
-    "D",
-    "E"]},
+    choices: listRoles},
   {type: 'list',
     message: 'Who is the manager of the employee?',
     name: 'department',
-    choices: 
-    ["A", 
-    "B", 
-    "C", 
-    "D",
-    "E"]}
+    choices: listEmployees}
   ];
 
 const questionUpdateEmployee = [
   {type: 'list',
     message: 'Whose role do you want to update?',
     name: 'department',
-    choices: 
-    ["A", 
-    "B", 
-    "C", 
-    "D",
-    "E"]},
+    choices: listEmployees},
   {type: 'list',
     message: 'Which role do you want to assign the selected employee?',
     name: 'department',
-    choices: 
-    ["A", 
-    "B", 
-    "C", 
-    "D",
-    "E"]},
+    choices: listRoles},
   ];
-
-
-
-
-// {type: 'maxlength-input',
-// message: 'What characters do you want to include in thd logo? (Up to 3 characters)',
-// name: 'characters',
-// maxLength: 3},
-// {type: 'input',
-// message: 'Which color do you want to use for the font? (Please type a color keyword or a hexadecimal number)',
-// name: 'font_color'},
-// {type: 'list',
-// message: 'Choose a shape for your logo.',
-// name: 'shape',
-// choices: ["circle ○", "square □", "triangle △"]},
-// {type: 'input',
-// message: 'Which color do you want to use for the shape? (Please type a color keyword or a hexadecimal number)',
-// name: 'shape_color'},
-// ];
 
 
 // Function to write SVG file
