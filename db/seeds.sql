@@ -22,5 +22,5 @@ VALUES ("Barack", "Obama", 1, NULL),
        ("Sundar", "Pichai", 5, 4),
        ("Jack", "Dorsey", 6, 4),
        ("Elon", "Musk", 7, 1),
-       ("George", "Clooney", 8, 4),
+       ("George", "Clooney", 8, 8),
        ("Natalie", "Portman", 8, 8);

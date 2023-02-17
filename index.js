@@ -110,7 +110,7 @@ function reaction(data) {
     // When 
     case "View all roles":
       const viewRoles = new Promise((resolve, reject) => {
-        db.query('SELECT role_id AS "Id", role_title AS "Role", role_salary AS "Salary", department_name AS "Department" FROM role JOIN department ON role.department_id = department.department_id', function (err, results) {
+        db.query('SELECT role_id AS "Id", role_title AS "Role", department_name AS "Department", role_salary AS "Salary" FROM role JOIN department ON role.department_id = department.department_id', function (err, results) {
           if (results) {
             console.table(results);
             resolve(results);
@@ -126,11 +126,20 @@ function reaction(data) {
       break;
     // When
     case "View all employees":
-      console.log("You'll see all employees soon")
-      db.query('SELECT * FROM employee', function (err, results) {
-        console.log(results);
-      })
-      .then(() => init());
+      const viewEmployees = new Promise((resolve, reject) => {
+        db.query('SELECT one.employee_id AS "Id", CONCAT(one.employee_firstname, " ", one.employee_lastname) AS "Name", role_title AS "Role", department_name AS "Department", role_salary AS "Salary", two.employee_name AS "Manager" FROM employee one JOIN role ON one.role_id = role.role_id JOIN department ON role.department_id = department.department_id JOIN employee two ON one.manager_id = two.employee_id', function (err, results) {
+          if (results) {
+            console.table(results);
+            resolve(results);
+          } else {
+            console.log(err)
+            reject(err);
+          }
+        });
+      });
+      viewRoles.then(() => {
+        init();
+      });
       break;
           // When
     case "Add a department":
