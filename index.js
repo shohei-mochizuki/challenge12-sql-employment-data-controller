@@ -127,7 +127,7 @@ function reaction(data) {
     // When
     case "View all employees":
       const viewEmployees = new Promise((resolve, reject) => {
-        db.query('SELECT one.employee_id AS "Id", CONCAT(one.employee_firstname, " ", one.employee_lastname) AS "Name", role_title AS "Role", department_name AS "Department", role_salary AS "Salary", two.employee_name AS "Manager" FROM employee one JOIN role ON one.role_id = role.role_id JOIN department ON role.department_id = department.department_id JOIN employee two ON one.manager_id = two.employee_id', function (err, results) {
+        db.query('SELECT one.employee_id AS "Id", CONCAT(one.employee_firstname, " ", one.employee_lastname) AS "Name", role_title AS "Role", department_name AS "Department", role_salary AS "Salary", CONCAT(two.employee_firstname, " ", two.employee_lastname) AS "Manager" FROM employee one JOIN role ON one.role_id = role.role_id JOIN department ON role.department_id = department.department_id LEFT JOIN employee two ON one.manager_id = two.employee_id', function (err, results) {
           if (results) {
             console.table(results);
             resolve(results);
@@ -137,7 +137,7 @@ function reaction(data) {
           }
         });
       });
-      viewRoles.then(() => {
+      viewEmployees.then(() => {
         init();
       });
       break;
