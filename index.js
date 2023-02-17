@@ -91,13 +91,21 @@ const questionUpdateEmployee = [
 // Function
 function reaction(data) {
   switch (data.action) {
-    // When 
     case "View all departments": 
-      console.log("You'll see all departments soon")
-      db.query('SELECT * FROM department', function (err, results) {
-        console.log(results);
-      })
-      .then(() => init());
+      const viewDepartments = new Promise((resolve, reject) => {
+        db.query('SELECT * FROM department', function (err, results) {
+          if (results) {
+            console.table(results);
+            resolve(results);
+          } else {
+            console.log(err)
+            reject(err);
+          }
+        });
+      });
+      viewDepartments.then(() => {
+        init();
+      });
       break;
     // When 
     case "View all roles":
@@ -152,11 +160,9 @@ function reaction(data) {
 // Function to initialize app
 function init() {
   inquirer.prompt(questionInitial) // Prompt window shows up first
-  .then((response) => {
-    console.log(response);
-    reaction(response);
-    }
-  )
+  .then((res) => {
+    reaction(res);
+    })
 }
 
 
