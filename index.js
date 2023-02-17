@@ -23,77 +23,102 @@ let listEmployees = [];
 const questionInitial = [
   {type: 'list',
    message: 'What would you like to do?',
-   name: 'shape',
+   name: 'action',
    choices: listOptionsInitial}
   ];
 
 const questionAddDepartment = [
   {type: 'maxlength-input',
    message: 'What is the name of the department?',
-   name: 'new_department',
+   name: 'department',
    maxLength: 30},
   ];
 
 const questionAddRole = [
   {type: 'maxlength-input',
     message: 'What is the title of the role?',
-    name: 'title',
+    name: 'role_title',
     maxLength: 30},
   {type: 'input',
    message: 'What is the salary of the role?',
-   name: 'salary'},
+   name: 'role_salary'},
   {type: 'list',
    message: 'Which department does the role belong to?',
-   name: 'department',
+   name: 'role_department',
    choices: listDepartments}
   ];
 
 const questionAddEmployee = [
   {type: 'maxlength-input',
     message: 'What is the first name of the employee?',
-    name: 'title',
+    name: 'employee_firstname',
     maxLength: 30},
   {type: 'maxlength-input',
     message: 'What is the last name of the employee?',
-    name: 'title',
+    name: 'employee_lastname',
     maxLength: 30},
   {type: 'list',
     message: 'What is the role of the employee?',
-    name: 'department',
+    name: 'employee_role',
     choices: listRoles},
   {type: 'list',
     message: 'Who is the manager of the employee?',
-    name: 'department',
+    name: 'employee_manager',
     choices: listEmployees}
   ];
 
 const questionUpdateEmployee = [
   {type: 'list',
     message: 'Whose role do you want to update?',
-    name: 'department',
+    name: 'update_emp_name',
     choices: listEmployees},
   {type: 'list',
     message: 'Which role do you want to assign the selected employee?',
-    name: 'department',
+    name: 'update_emp_role',
     choices: listRoles},
   ];
 
 
 // Function to write SVG file
 function reaction(data) {
-  switch (data.shape) {
-    // When "circle ○" is chosen, create an instance of the class "Circle" and use its function "createSvg" to create a SVG file with the user input data
-    case "circle ○": 
+  switch (data.action) {
+    // When 
+    case "View all departments": 
       fs.writeFile(fileName, (new shapeSvg.Circle(data.shape_color, data.font_color, data.characters)).createSvg(), 
       (err) => err ? console.error(err) : console.log('Generated logo.svg'));
       break;
-    // When "square □" is chosen, create an instance of the class "Square" and use its function "createSvg" to create a SVG file with the user input data
-    case "square □":
+    // When 
+    case "View all roles":
       fs.writeFile(fileName, (new shapeSvg.Square(data.shape_color, data.font_color, data.characters)).createSvg(), 
       (err) => err ? console.error(err) : console.log('Generated logo.svg'));
       break;
-    // When "triangle △" is chosen, create an instance of the class "Triangle" and use its function "createSvg" to create a SVG file with the user input data
-    case "triangle △":
+    // When
+    case "View all employees":
+      fs.writeFile(fileName, (new shapeSvg.Triangle(data.shape_color, data.font_color, data.characters)).createSvg(), 
+      (err) => err ? console.error(err) : console.log('Generated logo.svg'));
+      break;
+          // When
+    case "Add a department":
+      fs.writeFile(fileName, (new shapeSvg.Triangle(data.shape_color, data.font_color, data.characters)).createSvg(), 
+      (err) => err ? console.error(err) : console.log('Generated logo.svg'));
+      break;
+          // When
+    case "Add a role":
+      fs.writeFile(fileName, (new shapeSvg.Triangle(data.shape_color, data.font_color, data.characters)).createSvg(), 
+      (err) => err ? console.error(err) : console.log('Generated logo.svg'));
+      break;
+          // When
+    case "Add an employee":
+      fs.writeFile(fileName, (new shapeSvg.Triangle(data.shape_color, data.font_color, data.characters)).createSvg(), 
+      (err) => err ? console.error(err) : console.log('Generated logo.svg'));
+      break;
+          // When
+    case "Update an employee role":
+      fs.writeFile(fileName, (new shapeSvg.Triangle(data.shape_color, data.font_color, data.characters)).createSvg(), 
+      (err) => err ? console.error(err) : console.log('Generated logo.svg'));
+      break;
+          // When
+    case "Quit":
       fs.writeFile(fileName, (new shapeSvg.Triangle(data.shape_color, data.font_color, data.characters)).createSvg(), 
       (err) => err ? console.error(err) : console.log('Generated logo.svg'));
       break;
