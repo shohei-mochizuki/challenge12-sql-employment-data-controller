@@ -80,7 +80,7 @@ const questionUpdateEmployee = [
 
 
 // Function to write SVG file
-function createLogo(fileName, data) {
+function reaction(data) {
   switch (data.shape) {
     // When "circle ○" is chosen, create an instance of the class "Circle" and use its function "createSvg" to create a SVG file with the user input data
     case "circle ○": 
@@ -105,7 +105,8 @@ function createLogo(fileName, data) {
 function init() {
   inquirer.prompt(questionInitial) // Prompt window shows up first
   .then((response) => {
-    createLogo("./examples/logo.svg", response); // Then logo.svg file will be created in the folder "examples"
+    console.log(response);
+    // reaction(response);
     }
   )
 }
