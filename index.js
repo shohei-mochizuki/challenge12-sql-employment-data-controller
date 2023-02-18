@@ -331,7 +331,7 @@ function reaction(data) {
               listOfRoles[element.role_title] = element.role_id; 
             });
             selectRole[0].choices = Object.keys(listOfRoles);
-            inquirer.prompt(selectRole) // Prompt to ask user to choose a manager
+            inquirer.prompt(selectRole) // Prompt to ask user to choose a role
             .then((response) => {
               queryText = `DELETE FROM role WHERE role_id = ${listOfRoles[response.role]}`;
               queryUpdate(queryText);
@@ -339,11 +339,21 @@ function reaction(data) {
           });
           break;
 
+        case "✖︎ Delete an employee":
+          db.query("SELECT employee_id, employee_firstname, employee_lastname FROM employee", function (error, results) {
+            let listOfEmployees = {};
+            results.forEach(element => {
+              listOfEmployees[element.employee_firstname + " " + element.employee_lastname] = element.employee_id; 
+            });
+            selectEmployee[0].choices = Object.keys(listOfEmployees);  
+            inquirer.prompt(selectEmployee) // Prompt to ask user to choose an employee
+            .then((response) => {
+              queryText = `DELETE FROM employee WHERE employee_id = ${listOfEmployees[response.employee]}`;
+              queryUpdate(queryText);
+            });
+          });
+          break;
 
-
-// "Delete a department",
-// "Delete a role",
-// "Delete an employee",
 // "Calculate total budget by department",
 
 
