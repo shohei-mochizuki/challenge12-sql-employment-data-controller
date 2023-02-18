@@ -200,7 +200,7 @@ function reaction(data) {
       db.query("SELECT DISTINCT two.employee_id, two.employee_firstname, two.employee_lastname FROM employee two RIGHT JOIN employee one ON one.manager_id = two.employee_id WHERE two.employee_id IS NOT NULL ORDER BY two.employee_id ASC", function (error, results) {
         let list = {};
         results.forEach(element => {
-          list[element.two.employee_firstname + " " + element.two.employee_lastname] = element.two.employee_id; 
+          list[element.employee_firstname + " " + element.employee_lastname] = element.employee_id; 
         });
         selectManager[0].choices = Object.keys(list);
         inquirer.prompt(selectManager) // Prompt to ask user to choose a manager
