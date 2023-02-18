@@ -90,8 +90,9 @@ const questionUpdateEmployee = [ // This set of questions will be asked when a u
 function queryView (queryText) {
   db.query(queryText, function (err, results) {
     if (results) {
-      console.log(results);
+      console.log(` `);
       console.table(results);
+      console.log(`--------- ⬇ CHOOSE YOUR NEXT ACTION ---------`);
       init()
     } else {
       console.error(err)
@@ -103,8 +104,9 @@ function queryView (queryText) {
 function queryAdd (queryText) {
   db.query(queryText, function (err, results) {
     if (results) {
-      console.log(`Successfully added!`);
-      console.log(results);
+      console.log(`Successfully added a new element as ID no.${results.insertId}
+
+--------- ⬇ CHOOSE YOUR NEXT ACTION ---------`);
       init()
     } else {
       console.error(err)
@@ -121,7 +123,7 @@ function reaction(data) {
       break;
     // When 
     case "View all roles":
-      queryText = 'SELECT role_id AS "Id", role_title AS "Role", department_name AS "Department", role_salary AS "Salary" FROM role JOIN department ON role.department_id = department.department_id';
+      queryText = 'SELECT role_id AS "Id", role_title AS "Role", department_name AS "Department", CONCAT("$",role_salary) AS "Salary" FROM role JOIN department ON role.department_id = department.department_id';
       queryView(queryText);
       break;
     // When
