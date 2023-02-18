@@ -1,9 +1,12 @@
-# Challenge 12 - Express : Easy Notetaker [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+# Challenge 12 - SQL : Employment Data Controller [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## DESCRIPTION 
-This application enables you to create a list of notes with only a few steps! Go to the webpage and input the information below. You can easily save and delete tasks.
-* Title of the note
-* Contents (texts)
+This application enables you to create and manage employment related data in your command line! You can do the following actions:
+* View general data (List of departments, list of roles, list of employees)
+* View specific data (List of employees by a manager or by a department)
+* View total budget per department 
+* Update data (Role or Manager of an employee)
+* Delete data (A department, a role or an employee)
 
 ## TABLE OF CONTENTS
 [INSTALLATION](#installation)<br>
@@ -15,11 +18,10 @@ This application enables you to create a list of notes with only a few steps! Go
 [QUESTIONS](#questions)
 
 ## INSTALLATION 
-### HEROKU
-If you use the application on Heroku, no installation is needed. Go to the webpage directly: [https://shohei-easynotetaker.herokuapp.com/](https://shohei-easynotetaker.herokuapp.com/)
-### LOCAL COMPUTER
-If you'd like to use the application on your local computer, follow the guidelines below:<br>
-This application requires 1.JavaScript, 2.Node.JS (version 16, not the latest) and 3.Node package manager to run. In a blank folder, please put necessary files (please refer to the TESTS section for the details) and open the command line. In the command line, move to this folder and then type "npm install". Make sure that a folder called "node_modules" and a file called package-lock.json are created. This application uses the following libraries: express and uuid. Type "npm start" in the command line and you'll see a  message "App listening at http://localhost:3001 🚀". Go to a web browser and type this URL. 
+This application requires 1.JavaScript, 2.Node.JS (version 16, not the latest) and 3.Node package manager to run. In a blank folder, please put necessary files (please refer to the TESTS section for the details) and open the command line. In the command line, move to this folder and then type "npm install". Make sure that a folder called "node_modules" and a file called package-lock.json are created. This application uses the following libraries:
+* inquirer (version 8.2.4) and its add-on (maxlength input prompt)
+* mysql2
+* console.table
 
 ## USAGE 
 On the landing page, click the "Get Started" button to go to the note section. Once you're in the note section, you can see saved notes on the left-hand side of the page and new note creation section on the right-hand side.
@@ -41,8 +43,6 @@ permit persons to whom the Software is furnished to do so.
 Please feel free to develop this application by forking the GitHub repository and sending me pull requests. You can also contact me.
 
 ## TESTS 
-### HEROKU
-If you use the application on Heroku, no installation is needed. Go to the webpage directly: [https://shohei-easynotetaker.herokuapp.com/](https://shohei-easynotetaker.herokuapp.com/)
 ### LOCAL COMPUTER
 Please copy the following files and folder to your computer and test this application:
 ```md
