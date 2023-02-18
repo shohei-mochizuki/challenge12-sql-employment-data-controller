@@ -21,7 +21,7 @@ const listOptionsInitial = ["View all departments",
 "Add a department", 
 "Add a role", 
 "Add an employee", 
-"Update an employee role",
+"Update an employee's role",
 "Quit"];
 
 // Create an array of questions for user input
@@ -156,10 +156,27 @@ function reaction(data) {
         });
       });
       break;
-          // When
+          // When        
     case "Update an employee's role":
-      console.log("You'll be able to update an employee's role soon")
-      .then(() => init());
+      db.query("SELECT employee_id, employee_firstname, employee_lastname FROM employee", function (error, results) {
+        let listOfEmployees = {};
+        results.forEach(element => {
+          listOfEmployees[element.employee_firstname + " " + element.employee_lastname] = element.employee_id; 
+        });
+        questionUpdateEmployee[0].choices = Object.keys(listOfEmployees);  
+        db.query("SELECT role_id, role_title FROM role", function (err, res) {
+          let listOfRoles = {};
+          res.forEach(e => {
+            listOfRoles[e.role_title] = e.role_id; 
+          });
+          questionUpdateEmployee[1].choices = Object.keys(listOfRoles);
+          inquirer.prompt(questionUpdateEmployee)
+          .then((response) => {
+            queryText = `UPDATE employee SET role_id = ${listOfRoles[response.update_emp_role]} WHERE employee_id = ${listOfEmployees[response.update_emp_name]}`;
+            queryAction(queryText);
+          });
+        });
+      });
       break;
     case "Quit":
       console.log("Bye!");
