@@ -118,17 +118,17 @@ function queryAdd (queryText) {
 function reaction(data) {
   switch (data.action) {
     case "View all departments":
-      queryText = 'SELECT department_id AS "Id", department_name AS "Department" FROM department';
+      queryText = 'SELECT department_id AS "Id", department_name AS "Department" FROM department ORDER BY department_id ASC';
       queryView(queryText);
       break;
     // When 
     case "View all roles":
-      queryText = 'SELECT role_id AS "Id", role_title AS "Role", department_name AS "Department", CONCAT("$",role_salary) AS "Salary" FROM role JOIN department ON role.department_id = department.department_id';
+      queryText = 'SELECT role_id AS "Id", role_title AS "Role", department_name AS "Department", CONCAT("$",role_salary) AS "Salary" FROM role JOIN department ON role.department_id = department.department_id ORDER BY role_id ASC';
       queryView(queryText);
       break;
     // When
     case "View all employees":
-      queryText = 'SELECT one.employee_id AS "Id", CONCAT(one.employee_firstname, " ", one.employee_lastname) AS "Name", role_title AS "Role", department_name AS "Department", role_salary AS "Salary", CONCAT(two.employee_firstname, " ", two.employee_lastname) AS "Manager" FROM employee one JOIN role ON one.role_id = role.role_id JOIN department ON role.department_id = department.department_id LEFT JOIN employee two ON one.manager_id = two.employee_id';
+      queryText = 'SELECT one.employee_id AS "Id", CONCAT(one.employee_firstname, " ", one.employee_lastname) AS "Name", role_title AS "Role", department_name AS "Department", CONCAT("$",role_salary) AS "Salary", CONCAT(two.employee_firstname, " ", two.employee_lastname) AS "Manager" FROM employee one JOIN role ON one.role_id = role.role_id JOIN department ON role.department_id = department.department_id LEFT JOIN employee two ON one.manager_id = two.employee_id ORDER BY one.employee_id ASC';
       queryView(queryText);
       break;
     // When
