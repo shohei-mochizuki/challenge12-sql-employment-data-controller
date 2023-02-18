@@ -43,23 +43,14 @@ permit persons to whom the Software is furnished to do so.
 Please feel free to develop this application by forking the GitHub repository and sending me pull requests. You can also contact me.
 
 ## TESTS 
-### LOCAL COMPUTER
 Please copy the following files and folder to your computer and test this application:
 ```md
 .
-├── db/db.json
-├── helpers/fsUtils.js
-├── public/               
-|   ├── assets/           
-|   |   ├── css/styles.css
-|   |   └── js/index.js     
-|   ├── index.html         
-|   └── notes.html        
-├── routes/
-|   ├── index.js
-|   └── notes.js          
-├── package.json
-└── server.js  
+├── db/
+|   ├── schema.sql
+|   └── seeds.sql
+├── index.js          
+└── package.json
 ``` 
 
 ## SCREENSHOTS
