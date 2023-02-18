@@ -197,7 +197,7 @@ function reaction(data) {
       db.query("SELECT department_id, department_name FROM department", function (error, results) {
         let listOfDepartments = {};
         results.forEach(element => {
-          listOfEmployees[element.department_name] = element.department_id; 
+          listOfDepartments[element.department_name] = element.department_id; 
         });
         questionViewEmpByDep[0].choices = Object.keys(listOfDepartments);
         inquirer.prompt(questionViewEmpByDep) // Prompt to ask user to choose a manager
