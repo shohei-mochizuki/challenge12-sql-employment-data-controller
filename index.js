@@ -25,6 +25,7 @@ const listOptionsInitial = ["View all departments",
 "Add a role", 
 "Add an employee", 
 "Update an employee's role",
+"Update an employee's manager",
 "Quit"];
 
 // Create arrays of questions for user input
@@ -75,7 +76,18 @@ const questionAddEmployee = [ // This set of questions will be asked when a user
     choices: []}
   ];
 
-const questionUpdateEmployee = [ // This set of questions will be asked when a user choose "Update an employee's role"
+const questionUpdateEmployeeRole = [ // This set of questions will be asked when a user choose "Update an employee's role"
+  {type: 'list',
+    message: 'Whose role do you want to update?',
+    name: 'update_emp_name',
+    choices: []},
+  {type: 'list',
+    message: 'Which role do you want to assign the selected employee?',
+    name: 'update_emp_role',
+    choices: []},
+  ];
+
+const questionUpdateEmployeeManager = [ // This set of questions will be asked when a user choose "Update an employee's role"
   {type: 'list',
     message: 'Whose role do you want to update?',
     name: 'update_emp_name',
@@ -201,14 +213,14 @@ function reaction(data) {
         results.forEach(element => {
           listOfEmployees[element.employee_firstname + " " + element.employee_lastname] = element.employee_id; 
         });
-        questionUpdateEmployee[0].choices = Object.keys(listOfEmployees);  
+        questionUpdateEmployeeRole[0].choices = Object.keys(listOfEmployees);  
         db.query("SELECT role_id, role_title FROM role", function (err, res) {
           let listOfRoles = {};
           res.forEach(e => {
             listOfRoles[e.role_title] = e.role_id; 
           });
-          questionUpdateEmployee[1].choices = Object.keys(listOfRoles);
-          inquirer.prompt(questionUpdateEmployee) // Prompt to ask user to input data to update employee's role
+          questionUpdateEmployeeRole[1].choices = Object.keys(listOfRoles);
+          inquirer.prompt(questionUpdateEmployeeRole) // Prompt to ask user to input data to update employee's role
           .then((response) => {
             queryText = `UPDATE employee SET role_id = ${listOfRoles[response.update_emp_role]} WHERE employee_id = ${listOfEmployees[response.update_emp_name]}`;
             queryUpdate(queryText);
@@ -216,6 +228,28 @@ function reaction(data) {
         });
       });
       break;
+
+      case "Update an employee's manager":
+        db.query("SELECT employee_id, employee_firstname, employee_lastname FROM employee", function (error, results) {
+          let listOfEmployees = {};
+          results.forEach(element => {
+            listOfEmployees[element.employee_firstname + " " + element.employee_lastname] = element.employee_id; 
+          });
+          questionUpdateEmployeeManager[0].choices = Object.keys(listOfEmployees);  
+          db.query("SELECT role_id, role_title FROM role", function (err, res) {
+            let listOfRoles = {};
+            res.forEach(e => {
+              listOfRoles[e.role_title] = e.role_id; 
+            });
+            questionUpdateEmployeeManager[1].choices = Object.keys(listOfRoles);
+            inquirer.prompt(questionUpdateEmployeeManager) // Prompt to ask user to input data to update employee's role
+            .then((response) => {
+              queryText = `UPDATE employee SET role_id = ${listOfRoles[response.update_emp_role]} WHERE employee_id = ${listOfEmployees[response.update_emp_name]}`;
+              queryUpdate(queryText);
+            });
+          });
+        });
+        break;
 
     case "Quit":
       console.log("Bye!");
