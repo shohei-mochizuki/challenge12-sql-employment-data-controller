@@ -2,9 +2,9 @@
 const inquirer = require('inquirer');
 const MaxLengthInputPrompt = require('inquirer-maxlength-input-prompt'); // This is an add-on to limit the number of input letters
 const mysql = require('mysql2');
+inquirer.registerPrompt('maxlength-input', MaxLengthInputPrompt)
 
-inquirer.registerPrompt('maxlength-input', MaxLengthInputPrompt) // This is an add-on to limit the number of input letters
-
+// Create a connection to mySQL
 let db = mysql.createConnection(
   {
     host: 'localhost',
@@ -15,6 +15,7 @@ let db = mysql.createConnection(
   console.log(`Connected to the employment_db database.`)
 );
 
+// List of options users will see at the beginning
 const listOptionsInitial = ["View all departments", 
 "View all roles", 
 "View all employees", 
@@ -24,28 +25,28 @@ const listOptionsInitial = ["View all departments",
 "Update an employee's role",
 "Quit"];
 
-// Create an array of questions for user input
-const questionInitial = [
+// Create arrays of questions for user input
+const questionInitial = [ // This set of questions will be asked at the begining
   {type: 'list',
    message: 'What would you like to do?',
    name: 'action',
    choices: listOptionsInitial}
   ];
 
-const questionAddDepartment = [
+const questionAddDepartment = [ // This set of questions will be asked when a user choose "Add a department"
   {type: 'maxlength-input',
    message: 'What is the name of the department?',
    name: 'department',
    maxLength: 30},
   ];
 
-const questionAddRole = [
+const questionAddRole = [ // This set of questions will be asked when a user choose "Add a role"
   {type: 'maxlength-input',
     message: 'What is the title of the role?',
     name: 'role_title',
     maxLength: 30},
   {type: 'input',
-   message: 'What is the salary of the role?',
+   message: 'What is the salary of the role? (input a number/value)',
    name: 'role_salary'},
   {type: 'list',
    message: 'Which department does the role belong to?',
@@ -53,7 +54,7 @@ const questionAddRole = [
    choices: []}
   ];
 
-const questionAddEmployee = [
+const questionAddEmployee = [ // This set of questions will be asked when a user choose "Add an employee"
   {type: 'maxlength-input',
     message: 'What is the first name of the employee?',
     name: 'employee_firstname',
@@ -72,7 +73,7 @@ const questionAddEmployee = [
     choices: []}
   ];
 
-const questionUpdateEmployee = [
+const questionUpdateEmployee = [ // This set of questions will be asked when a user choose "Update an employee's role"
   {type: 'list',
     message: 'Whose role do you want to update?',
     name: 'update_emp_name',
@@ -83,7 +84,9 @@ const questionUpdateEmployee = [
     choices: []},
   ];
 
-function queryAction (queryText) {
+
+// Function of viewing data from mySQL
+function queryView (queryText) {
   db.query(queryText, function (err, results) {
     if (results) {
       console.table(results);
@@ -99,17 +102,17 @@ function reaction(data) {
   switch (data.action) {
     case "View all departments":
       queryText = 'SELECT department_id AS "Id", department_name AS "Department" FROM department';
-      queryAction(queryText);
+      queryView(queryText);
       break;
     // When 
     case "View all roles":
       queryText = 'SELECT role_id AS "Id", role_title AS "Role", department_name AS "Department", role_salary AS "Salary" FROM role JOIN department ON role.department_id = department.department_id';
-      queryAction(queryText);
+      queryView(queryText);
       break;
     // When
     case "View all employees":
       queryText = 'SELECT one.employee_id AS "Id", CONCAT(one.employee_firstname, " ", one.employee_lastname) AS "Name", role_title AS "Role", department_name AS "Department", role_salary AS "Salary", CONCAT(two.employee_firstname, " ", two.employee_lastname) AS "Manager" FROM employee one JOIN role ON one.role_id = role.role_id JOIN department ON role.department_id = department.department_id LEFT JOIN employee two ON one.manager_id = two.employee_id';
-      queryAction(queryText);
+      queryView(queryText);
       break;
     // When
     case "Add a department":
