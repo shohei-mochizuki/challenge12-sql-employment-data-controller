@@ -58,9 +58,8 @@ Copy the following files and folder to your computer and test this application:
 ``` 
 
 ## SCREENSHOTS
-![image](https://user-images.githubusercontent.com/121307266/219237671-9f8bb3c5-ae24-471c-88ba-cba0db10c897.png)
-![image](https://user-images.githubusercontent.com/121307266/219237784-bc10f76e-cc21-4120-8977-986de19b35d1.png)
-![image](https://user-images.githubusercontent.com/121307266/219237884-62d6939e-df14-467e-acf4-a2ca46258afa.png)
+![image](https://user-images.githubusercontent.com/121307266/219885075-c96eae61-6122-489e-9bc2-903f487dd004.png)
+![image](https://user-images.githubusercontent.com/121307266/219885090-e8ccbcd4-892c-4942-b9ee-af84dd14e394.png)
 
 ## QUESTIONS 
 If you have any questions, feel free to reach out to me!<br>
