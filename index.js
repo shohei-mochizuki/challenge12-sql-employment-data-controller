@@ -99,7 +99,7 @@ const questionUpdEmpMgr = [ // This set of questions will be asked when a user c
     name: 'employee',
     choices: []},
   {type: 'list',
-    message: 'Which role do you want to assign the selected employee?',
+    message: 'Who (which manager) do you want to assign to the selected employee?',
     name: 'manager',
     choices: []},
   ];
