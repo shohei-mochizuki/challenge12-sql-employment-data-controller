@@ -1,3 +1,4 @@
+// 1. LIBRALIES & VARIABLES
 // Include packages needed for this application
 const inquirer = require('inquirer');
 const MaxLengthInputPrompt = require('inquirer-maxlength-input-prompt'); // This is an add-on to limit the number of input letters
@@ -86,7 +87,8 @@ const questionUpdateEmployee = [ // This set of questions will be asked when a u
   ];
 
 
-// Function of viewing data from mySQL
+// 2. FUNCTIONS  
+// 2-1. Function of viewing data from mySQL
 function queryView (queryText) {
   db.query(queryText, function (err, results) {
     if (results) {
@@ -100,7 +102,7 @@ function queryView (queryText) {
   })
 };
 
-// Function of adding data in mySQL
+// 2-2. Function of adding data to mySQL
 function queryAdd (queryText) {
   db.query(queryText, function (err, results) {
     if (results) {
@@ -114,7 +116,7 @@ function queryAdd (queryText) {
   })
 };
 
-// Function of updating data in mySQL
+// 2-3. Function of updating data in mySQL
 function queryUpdate (queryText) {
   db.query(queryText, function (err, results) {
     console.log(results);
@@ -129,32 +131,33 @@ function queryUpdate (queryText) {
   })
 };
 
-// Function
+// 2-4 Switch function depending on what user wants to do
 function reaction(data) {
   switch (data.action) {
+    
     case "View all departments":
       queryText = 'SELECT department_id AS "Id", department_name AS "Department" FROM department ORDER BY department_id ASC';
       queryView(queryText);
       break;
-    // When 
+
     case "View all roles":
       queryText = 'SELECT role_id AS "Id", role_title AS "Role", department_name AS "Department", CONCAT("$",role_salary) AS "Salary" FROM role JOIN department ON role.department_id = department.department_id ORDER BY role_id ASC';
       queryView(queryText);
       break;
-    // When
+    
     case "View all employees":
       queryText = 'SELECT one.employee_id AS "Id", CONCAT(one.employee_firstname, " ", one.employee_lastname) AS "Name", role_title AS "Role", department_name AS "Department", CONCAT("$",role_salary) AS "Salary", CONCAT(two.employee_firstname, " ", two.employee_lastname) AS "Manager" FROM employee one JOIN role ON one.role_id = role.role_id JOIN department ON role.department_id = department.department_id LEFT JOIN employee two ON one.manager_id = two.employee_id ORDER BY one.employee_id ASC';
       queryView(queryText);
       break;
-    // When
+    
     case "Add a department":
-      inquirer.prompt(questionAddDepartment)
+      inquirer.prompt(questionAddDepartment) // Prompt to ask user to input data for new department
         .then((response) => {
           queryText = `INSERT INTO department (department_name) VALUES ("${response.new_department}")`
           queryAdd(queryText);
         })
       break;
-          // When
+
     case "Add a role":
       db.query("SELECT * FROM department", function (err, results) {
         var listOfDepartments = {};
@@ -162,14 +165,14 @@ function reaction(data) {
           listOfDepartments[element.department_name] = element.department_id; 
         });
         questionAddRole[2].choices = Object.keys(listOfDepartments);
-        inquirer.prompt(questionAddRole)
+        inquirer.prompt(questionAddRole) // Prompt to ask user to input data for new role
         .then((response) => {
           queryText = `INSERT INTO role (role_title, role_salary, department_id) VALUES ("${response.role_title}", ${response.role_salary}, ${listOfDepartments[response.role_department]})`;
           queryAdd(queryText);
         })
       });
       break;
-          // When
+
     case "Add an employee":
       db.query("SELECT role_id, role_title FROM role", function (err, res) {
         let listOfRoles = {};
@@ -183,7 +186,7 @@ function reaction(data) {
             listOfEmployees[element.employee_firstname + " " + element.employee_lastname] = element.employee_id; 
           });
           questionAddEmployee[3].choices = Object.keys(listOfEmployees);
-          inquirer.prompt(questionAddEmployee)
+          inquirer.prompt(questionAddEmployee) // Prompt to ask user to input data for new employee
           .then((response) => {
             queryText = `INSERT INTO employee (employee_firstname, employee_lastname, role_id, manager_id) VALUES ("${response.employee_firstname}", "${response.employee_lastname}", ${listOfRoles[response.employee_role]}, ${listOfEmployees[response.employee_manager]})`;
             queryAdd(queryText);
@@ -191,7 +194,7 @@ function reaction(data) {
         });
       });
       break;
-          // When        
+      
     case "Update an employee's role":
       db.query("SELECT employee_id, employee_firstname, employee_lastname FROM employee", function (error, results) {
         let listOfEmployees = {};
@@ -205,7 +208,7 @@ function reaction(data) {
             listOfRoles[e.role_title] = e.role_id; 
           });
           questionUpdateEmployee[1].choices = Object.keys(listOfRoles);
-          inquirer.prompt(questionUpdateEmployee)
+          inquirer.prompt(questionUpdateEmployee) // Prompt to ask user to input data to update employee's role
           .then((response) => {
             queryText = `UPDATE employee SET role_id = ${listOfRoles[response.update_emp_role]} WHERE employee_id = ${listOfEmployees[response.update_emp_name]}`;
             queryUpdate(queryText);
@@ -213,15 +216,16 @@ function reaction(data) {
         });
       });
       break;
+
     case "Quit":
       console.log("Bye!");
-      db.end();
+      db.end(); // This ends connection with mySQL
       break;
   }
 }
 
 
-// Function to initialize app
+// 2-5. Function to initialize app
 function init() {
   inquirer.prompt(questionInitial) // Prompt window shows up first
     .then((res) => {
@@ -233,5 +237,5 @@ function init() {
 }
 
 
-// Function call to initialize app
+// 3. INITIALIZE APP
 init();
