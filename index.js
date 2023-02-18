@@ -42,7 +42,7 @@ const questionInitial = [ // This set of questions will be asked at the begining
    choices: listOptionsInitial}
   ];
 
-const questionAddDepartment = [ // This set of questions will be asked when a user choose "Add a department"
+const questionAddDep = [ // This set of questions will be asked when a user choose "Add a department"
   {type: 'maxlength-input',
    message: 'What is the name of the department?',
    name: 'new_department',
@@ -52,48 +52,48 @@ const questionAddDepartment = [ // This set of questions will be asked when a us
 const questionAddRole = [ // This set of questions will be asked when a user choose "Add a role"
   {type: 'maxlength-input',
     message: 'What is the title of the role?',
-    name: 'role_title',
+    name: 'title',
     maxLength: 30},
   {type: 'input',
    message: 'What is the salary of the role? (input a number/value)',
-   name: 'role_salary'},
+   name: 'salary'},
   {type: 'list',
    message: 'Which department does the role belong to?',
-   name: 'role_department',
+   name: 'department',
    choices: []}
   ];
 
-const questionAddEmployee = [ // This set of questions will be asked when a user choose "Add an employee"
+const questionAddEmp = [ // This set of questions will be asked when a user choose "Add an employee"
   {type: 'maxlength-input',
     message: 'What is the first name of the employee?',
-    name: 'employee_firstname',
+    name: 'firstname',
     maxLength: 30},
   {type: 'maxlength-input',
     message: 'What is the last name of the employee?',
-    name: 'employee_lastname',
+    name: 'lastname',
     maxLength: 30},
   {type: 'list',
     message: 'What is the role of the employee?',
-    name: 'employee_role',
+    name: 'role',
     choices: []},
   {type: 'list',
     message: 'Who is the manager of the employee?',
-    name: 'employee_manager',
+    name: 'manager',
     choices: []}
   ];
 
-const questionUpdateEmployeeRole = [ // This set of questions will be asked when a user choose "Update an employee's role"
+const questionUpdEmpRole = [ // This set of questions will be asked when a user choose "Update an employee's role"
   {type: 'list',
     message: 'Whose role do you want to update?',
-    name: 'update_emp_name',
+    name: 'employee',
     choices: []},
   {type: 'list',
     message: 'Which role do you want to assign the selected employee?',
-    name: 'update_emp_role',
+    name: 'role',
     choices: []},
   ];
 
-const questionUpdateEmployeeManager = [ // This set of questions will be asked when a user choose "Update an employee's role"
+const questionUpdEmpMgr = [ // This set of questions will be asked when a user choose "Update an employee's role"
   {type: 'list',
     message: 'Whose role do you want to update?',
     name: 'employee',
@@ -232,7 +232,7 @@ function reaction(data) {
       break;
 
     case "+ Add a department":
-      inquirer.prompt(questionAddDepartment) // Prompt to ask user to input data for new department
+      inquirer.prompt(questionAddDep) // Prompt to ask user to input data for new department
         .then((response) => {
           queryText = `INSERT INTO department (department_name) VALUES ("${response.new_department}")`
           queryAdd(queryText);
@@ -248,7 +248,7 @@ function reaction(data) {
         questionAddRole[2].choices = Object.keys(list);
         inquirer.prompt(questionAddRole) // Prompt to ask user to input data for new role
         .then((response) => {
-          queryText = `INSERT INTO role (role_title, role_salary, department_id) VALUES ("${response.role_title}", ${response.role_salary}, ${list[response.role_department]})`;
+          queryText = `INSERT INTO role (role_title, role_salary, department_id) VALUES ("${response.title}", ${response.salary}, ${list[response.department]})`;
           queryAdd(queryText);
         })
       });
@@ -260,16 +260,16 @@ function reaction(data) {
         res.forEach(e => {
           listOfRoles[e.role_title] = e.role_id; 
         });
-        questionAddEmployee[2].choices = Object.keys(listOfRoles);
+        questionAddEmp[2].choices = Object.keys(listOfRoles);
         db.query("SELECT employee_id, employee_firstname, employee_lastname FROM employee", function (error, results) {
           let listOfEmployees = {};
           results.forEach(element => {
             listOfEmployees[element.employee_firstname + " " + element.employee_lastname] = element.employee_id; 
           });
-          questionAddEmployee[3].choices = Object.keys(listOfEmployees);
-          inquirer.prompt(questionAddEmployee) // Prompt to ask user to input data for new employee
+          questionAddEmp[3].choices = Object.keys(listOfEmployees);
+          inquirer.prompt(questionAddEmp) // Prompt to ask user to input data for new employee
           .then((response) => {
-            queryText = `INSERT INTO employee (employee_firstname, employee_lastname, role_id, manager_id) VALUES ("${response.employee_firstname}", "${response.employee_lastname}", ${listOfRoles[response.employee_role]}, ${listOfEmployees[response.employee_manager]})`;
+            queryText = `INSERT INTO employee (employee_firstname, employee_lastname, role_id, manager_id) VALUES ("${response.firstname}", "${response.lastname}", ${listOfRoles[response.role]}, ${listOfEmployees[response.manager]})`;
             queryAdd(queryText);
           });
         });
@@ -282,16 +282,16 @@ function reaction(data) {
         results.forEach(element => {
           listOfEmployees[element.employee_firstname + " " + element.employee_lastname] = element.employee_id; 
         });
-        questionUpdateEmployeeRole[0].choices = Object.keys(listOfEmployees);  
+        questionUpdEmpRole[0].choices = Object.keys(listOfEmployees);  
         db.query("SELECT role_id, role_title FROM role", function (err, res) {
           let listOfRoles = {};
           res.forEach(e => {
             listOfRoles[e.role_title] = e.role_id; 
           });
-          questionUpdateEmployeeRole[1].choices = Object.keys(listOfRoles);
-          inquirer.prompt(questionUpdateEmployeeRole) // Prompt to ask user to input data to update employee's role
+          questionUpdEmpRole[1].choices = Object.keys(listOfRoles);
+          inquirer.prompt(questionUpdEmpRole) // Prompt to ask user to input data to update employee's role
           .then((response) => {
-            queryText = `UPDATE employee SET role_id = ${listOfRoles[response.update_emp_role]} WHERE employee_id = ${listOfEmployees[response.update_emp_name]}`;
+            queryText = `UPDATE employee SET role_id = ${listOfRoles[response.role]} WHERE employee_id = ${listOfEmployees[response.employee]}`;
             queryUpdate(queryText);
           });
         });
@@ -304,9 +304,9 @@ function reaction(data) {
         results.forEach(element => {
           list[element.employee_firstname + " " + element.employee_lastname] = element.employee_id; 
         });
-        questionUpdateEmployeeManager[0].choices = Object.keys(list);  
-        questionUpdateEmployeeManager[1].choices = Object.keys(list);
-        inquirer.prompt(questionUpdateEmployeeManager) // Prompt to ask user to input data to update employee's role
+        questionUpdEmpMgr[0].choices = Object.keys(list);  
+        questionUpdEmpMgr[1].choices = Object.keys(list);
+        inquirer.prompt(questionUpdEmpMgr) // Prompt to ask user to input data to update employee's role
         .then((response) => {
           queryText = `UPDATE employee SET manager_id = ${list[response.manager]} WHERE employee_id = ${list[response.employee]}`;
           queryUpdate(queryText);
