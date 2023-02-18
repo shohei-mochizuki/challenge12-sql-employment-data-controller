@@ -114,6 +114,21 @@ function queryAdd (queryText) {
   })
 };
 
+// Function of updating data in mySQL
+function queryUpdate (queryText) {
+  db.query(queryText, function (err, results) {
+    console.log(results);
+    if (results) {
+      console.log(`Successfully updated the data!
+
+--------- ⬇ CHOOSE YOUR NEXT ACTION ---------`);
+      init()
+    } else {
+      console.error(err)
+    };
+  })
+};
+
 // Function
 function reaction(data) {
   switch (data.action) {
@@ -193,7 +208,7 @@ function reaction(data) {
           inquirer.prompt(questionUpdateEmployee)
           .then((response) => {
             queryText = `UPDATE employee SET role_id = ${listOfRoles[response.update_emp_role]} WHERE employee_id = ${listOfEmployees[response.update_emp_name]}`;
-            queryAction(queryText);
+            queryUpdate(queryText);
           });
         });
       });
