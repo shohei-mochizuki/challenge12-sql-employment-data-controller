@@ -24,10 +24,6 @@ const listOptionsInitial = ["View all departments",
 "Update an employee role",
 "Quit"];
 
-let listDepartments = [];
-let listRoles = [];
-let listEmployees = [];
-
 // Create an array of questions for user input
 const questionInitial = [
   {type: 'list',
@@ -54,7 +50,7 @@ const questionAddRole = [
   {type: 'list',
    message: 'Which department does the role belong to?',
    name: 'role_department',
-   choices: listDepartments}
+   choices: []}
   ];
 
 const questionAddEmployee = [
@@ -69,22 +65,22 @@ const questionAddEmployee = [
   {type: 'list',
     message: 'What is the role of the employee?',
     name: 'employee_role',
-    choices: listRoles},
+    choices: []},
   {type: 'list',
     message: 'Who is the manager of the employee?',
     name: 'employee_manager',
-    choices: listEmployees}
+    choices: []}
   ];
 
 const questionUpdateEmployee = [
   {type: 'list',
     message: 'Whose role do you want to update?',
     name: 'update_emp_name',
-    choices: listEmployees},
+    choices: []},
   {type: 'list',
     message: 'Which role do you want to assign the selected employee?',
     name: 'update_emp_role',
-    choices: listRoles},
+    choices: []},
   ];
 
 function queryAction (queryText) {
@@ -119,20 +115,23 @@ function reaction(data) {
     case "Add a department":
       inquirer.prompt(questionAddDepartment)
         .then((response) => {
-          queryText = `INSERT INTO department (department_name) VALUES (${response.department})`
+          queryText = `INSERT INTO department (department_name) VALUES ("${response.department}")`
           queryAction(queryText);
-          // db.query('INSERT INTO department (department_name) VALUES (?)', response.department, function (err, results) {
-          //   console.log(results);
-          // })
         })
       break;
           // When
     case "Add a role":
-      
-    inquirer.prompt(questionAddRole)
-        .then((response) => { role_title, role_salary, role_department
-          queryText = `INSERT INTO role (department_name) VALUES (${response.department})`
-          queryAction(queryText);
+      db.query("SELECT * FROM department", function (err, results) {
+        let listOfDepartments = {};
+        results.forEach(element => {
+          listOfDepartments[element.department_name] = element.department_id; 
+        });
+        questionAddRole[2].choices = Object.keys(listOfDepartments);
+        inquirer.prompt(questionAddRole)
+        .then((response) => { // role_title, role_salary, role_department
+          console.log(response)
+        });
+      })
       break;
           // When
     case "Add an employee":
