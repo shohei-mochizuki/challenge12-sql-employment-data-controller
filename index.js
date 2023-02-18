@@ -198,14 +198,14 @@ function reaction(data) {
 
     case "View employees by manager":
       db.query("SELECT employee_id, employee_firstname, employee_lastname FROM employee", function (error, results) {
-        let listOfEmployees = {};
+        let list = {};
         results.forEach(element => {
-          listOfEmployees[element.employee_firstname + " " + element.employee_lastname] = element.employee_id; 
+          list[element.employee_firstname + " " + element.employee_lastname] = element.employee_id; 
         });
-        selectManager[0].choices = Object.keys(listOfEmployees);
+        selectManager[0].choices = Object.keys(list);
         inquirer.prompt(selectManager) // Prompt to ask user to choose a manager
         .then((response) => {
-          queryText = `SELECT one.employee_id AS "Id", CONCAT(one.employee_firstname, " ", one.employee_lastname) AS "Name", role_title AS "Role", department_name AS "Department", CONCAT("$",role_salary) AS "Salary", CONCAT(two.employee_firstname, " ", two.employee_lastname) AS "Manager" FROM employee one JOIN role ON one.role_id = role.role_id JOIN department ON role.department_id = department.department_id LEFT JOIN employee two ON one.manager_id = two.employee_id WHERE one.manager_id = ${listOfEmployees[response.manager]} ORDER BY one.employee_id ASC`;
+          queryText = `SELECT one.employee_id AS "Id", CONCAT(one.employee_firstname, " ", one.employee_lastname) AS "Name", role_title AS "Role", department_name AS "Department", CONCAT("$",role_salary) AS "Salary", CONCAT(two.employee_firstname, " ", two.employee_lastname) AS "Manager" FROM employee one JOIN role ON one.role_id = role.role_id JOIN department ON role.department_id = department.department_id LEFT JOIN employee two ON one.manager_id = two.employee_id WHERE one.manager_id = ${list[response.manager]} ORDER BY one.employee_id ASC`;
           queryView(queryText);
         });
       });
@@ -213,14 +213,14 @@ function reaction(data) {
     
     case "View employees by department":
       db.query("SELECT department_id, department_name FROM department", function (error, results) {
-        let listOfDepartments = {};
+        let list = {};
         results.forEach(element => {
-          listOfDepartments[element.department_name] = element.department_id; 
+          list[element.department_name] = element.department_id; 
         });
-        selectDepartment[0].choices = Object.keys(listOfDepartments);
+        selectDepartment[0].choices = Object.keys(list);
         inquirer.prompt(selectDepartment) // Prompt to ask user to choose a department
         .then((response) => {
-          queryText = `SELECT one.employee_id AS "Id", CONCAT(one.employee_firstname, " ", one.employee_lastname) AS "Name", role_title AS "Role", department_name AS "Department", CONCAT("$",role_salary) AS "Salary", CONCAT(two.employee_firstname, " ", two.employee_lastname) AS "Manager" FROM employee one JOIN role ON one.role_id = role.role_id JOIN department ON role.department_id = department.department_id LEFT JOIN employee two ON one.manager_id = two.employee_id WHERE department.department_id = ${listOfDepartments[response.department]} ORDER BY one.employee_id ASC`;
+          queryText = `SELECT one.employee_id AS "Id", CONCAT(one.employee_firstname, " ", one.employee_lastname) AS "Name", role_title AS "Role", department_name AS "Department", CONCAT("$",role_salary) AS "Salary", CONCAT(two.employee_firstname, " ", two.employee_lastname) AS "Manager" FROM employee one JOIN role ON one.role_id = role.role_id JOIN department ON role.department_id = department.department_id LEFT JOIN employee two ON one.manager_id = two.employee_id WHERE department.department_id = ${list[response.department]} ORDER BY one.employee_id ASC`;
           queryView(queryText);
         });
       });
@@ -241,14 +241,14 @@ function reaction(data) {
 
     case "+ Add a role":
       db.query("SELECT * FROM department", function (err, results) {
-        var listOfDepartments = {};
+        var list = {};
         results.forEach(element => {
-          listOfDepartments[element.department_name] = element.department_id; 
+          list[element.department_name] = element.department_id; 
         });
-        questionAddRole[2].choices = Object.keys(listOfDepartments);
+        questionAddRole[2].choices = Object.keys(list);
         inquirer.prompt(questionAddRole) // Prompt to ask user to input data for new role
         .then((response) => {
-          queryText = `INSERT INTO role (role_title, role_salary, department_id) VALUES ("${response.role_title}", ${response.role_salary}, ${listOfDepartments[response.role_department]})`;
+          queryText = `INSERT INTO role (role_title, role_salary, department_id) VALUES ("${response.role_title}", ${response.role_salary}, ${list[response.role_department]})`;
           queryAdd(queryText);
         })
       });
@@ -300,15 +300,15 @@ function reaction(data) {
 
     case "▲ Update an employee's manager":
       db.query("SELECT employee_id, employee_firstname, employee_lastname FROM employee", function (error, results) {
-        let listOfEmployees = {};
+        let list = {};
         results.forEach(element => {
-          listOfEmployees[element.employee_firstname + " " + element.employee_lastname] = element.employee_id; 
+          list[element.employee_firstname + " " + element.employee_lastname] = element.employee_id; 
         });
-        questionUpdateEmployeeManager[0].choices = Object.keys(listOfEmployees);  
-        questionUpdateEmployeeManager[1].choices = Object.keys(listOfEmployees);
+        questionUpdateEmployeeManager[0].choices = Object.keys(list);  
+        questionUpdateEmployeeManager[1].choices = Object.keys(list);
         inquirer.prompt(questionUpdateEmployeeManager) // Prompt to ask user to input data to update employee's role
         .then((response) => {
-          queryText = `UPDATE employee SET manager_id = ${listOfEmployees[response.manager]} WHERE employee_id = ${listOfEmployees[response.employee]}`;
+          queryText = `UPDATE employee SET manager_id = ${list[response.manager]} WHERE employee_id = ${list[response.employee]}`;
           queryUpdate(queryText);
         });
       });
@@ -316,14 +316,14 @@ function reaction(data) {
 
     case "✖︎ Delete a department":
       db.query("SELECT department_id, department_name FROM department", function (error, results) {
-        let listOfDepartments = {};
+        let list = {};
         results.forEach(element => {
-          listOfDepartments[element.department_name] = element.department_id; 
+          list[element.department_name] = element.department_id; 
         });
-        selectDepartment[0].choices = Object.keys(listOfDepartments);
+        selectDepartment[0].choices = Object.keys(list);
         inquirer.prompt(selectDepartment) // Prompt to ask user to choose a manager
         .then((response) => {
-          queryText = `DELETE FROM department WHERE department_id = ${listOfDepartments[response.department]}`;
+          queryText = `DELETE FROM department WHERE department_id = ${list[response.department]}`;
           queryUpdate(queryText);
         });
       });
@@ -331,14 +331,14 @@ function reaction(data) {
 
     case "✖︎ Delete a role":
       db.query("SELECT role_id, role_title FROM role", function (error, results) {
-        let listOfRoles = {};
+        let list = {};
         results.forEach(element => {
-          listOfRoles[element.role_title] = element.role_id; 
+          list[element.role_title] = element.role_id; 
         });
-        selectRole[0].choices = Object.keys(listOfRoles);
+        selectRole[0].choices = Object.keys(list);
         inquirer.prompt(selectRole) // Prompt to ask user to choose a role
         .then((response) => {
-          queryText = `DELETE FROM role WHERE role_id = ${listOfRoles[response.role]}`;
+          queryText = `DELETE FROM role WHERE role_id = ${list[response.role]}`;
           queryUpdate(queryText);
         });
       });
@@ -346,14 +346,14 @@ function reaction(data) {
 
     case "✖︎ Delete an employee":
       db.query("SELECT employee_id, employee_firstname, employee_lastname FROM employee", function (error, results) {
-        let listOfEmployees = {};
+        let list = {};
         results.forEach(element => {
-          listOfEmployees[element.employee_firstname + " " + element.employee_lastname] = element.employee_id; 
+          list[element.employee_firstname + " " + element.employee_lastname] = element.employee_id; 
         });
-        selectEmployee[0].choices = Object.keys(listOfEmployees);  
+        selectEmployee[0].choices = Object.keys(list);  
         inquirer.prompt(selectEmployee) // Prompt to ask user to choose an employee
         .then((response) => {
-          queryText = `DELETE FROM employee WHERE employee_id = ${listOfEmployees[response.employee]}`;
+          queryText = `DELETE FROM employee WHERE employee_id = ${list[response.employee]}`;
           queryUpdate(queryText);
         });
       });
