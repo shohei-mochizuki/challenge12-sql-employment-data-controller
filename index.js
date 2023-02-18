@@ -87,8 +87,8 @@ const questionUpdateEmployee = [
     choices: listRoles},
   ];
 
-function queryAction (qText) {
-  db.query(qText, function (err, results) {
+function queryAction (queryText) {
+  db.query(queryText, function (err, results) {
     if (results) {
       console.table(results);
       init()
@@ -102,8 +102,8 @@ function queryAction (qText) {
 function reaction(data) {
   switch (data.action) {
     case "View all departments":
-      queryText = 'SELECT department_id AS "Id", department_name AS "Department" FROM department';
-      queryAction(queryText);
+      query = 'SELECT department_id AS "Id", department_name AS "Department" FROM department';
+      queryAction(query);
       // db.query(queryText, function (err, results) {
       //   if (results) {
       //     console.table(results);
