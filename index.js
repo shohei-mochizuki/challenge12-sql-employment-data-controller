@@ -122,22 +122,39 @@ function reaction(data) {
           // When
     case "Add a role":
       db.query("SELECT * FROM department", function (err, results) {
-        let listOfDepartments = {};
+        var listOfDepartments = {};
         results.forEach(element => {
           listOfDepartments[element.department_name] = element.department_id; 
         });
         questionAddRole[2].choices = Object.keys(listOfDepartments);
         inquirer.prompt(questionAddRole)
-        .then((response) => { // role_title, role_salary, role_department
+        .then((response) => {
           queryText = `INSERT INTO role (role_title, role_salary, department_id) VALUES ("${response.role_title}", ${response.role_salary}, ${listOfDepartments[response.role_department]})`;
           queryAction(queryText);
-        });
-      })
+        })
+      });
       break;
           // When
     case "Add an employee":
-      console.log("You'll be able to add an employee soon")
-      .then(() => init());
+      db.query("SELECT role_id, role_title FROM role", function (err, res) {
+        let listOfRoles = {};
+        res.forEach(e => {
+          listOfRoles[e.role_title] = e.role_id; 
+        });
+        questionAddEmployee[2].choices = Object.keys(listOfRoles);
+        db.query("SELECT employee_id, employee_firstname, employee_lastname FROM employee", function (error, results) {
+          let listOfEmployees = {};
+          results.forEach(element => {
+            listOfEmployees[element.employee_firstname + " " + element.employee_lastname] = element.employee_id; 
+          });
+          questionAddEmployee[3].choices = Object.keys(listOfEmployees);
+          inquirer.prompt(questionAddEmployee)
+          .then((response) => {
+            queryText = `INSERT INTO employee (employee_firstname, employee_lastname, role_id, manager_id) VALUES ("${response.employee_firstname}", "${response.employee_lastname}", ${listOfRoles[response.employee_role]}, ${listOfEmployees[response.employee_manager]})`;
+            queryAction(queryText);
+          });
+        });
+      });
       break;
           // When
     case "Update an employee's role":
