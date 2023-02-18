@@ -20,7 +20,9 @@ let db = mysql.createConnection(
 // List of options users will see at the beginning
 const listOptionsInitial = ["View all departments", 
 "View all roles", 
-"View all employees", 
+"View all employees",
+"View employees by manager", 
+"View employees by department", 
 "Add a department", 
 "Add a role", 
 "Add an employee", 
@@ -98,6 +100,13 @@ const questionUpdateEmployeeManager = [ // This set of questions will be asked w
     choices: []},
   ];
 
+const questionViewEmpByMgr = [ // This set of questions will be asked when a user choose "View employees by manager"
+  {type: 'list',
+    message: 'Choose a manager',
+    name: 'manager',
+    choices: []},
+  ];
+
 
 // 2. FUNCTIONS  
 // 2-1. Function of viewing data from mySQL
@@ -161,6 +170,25 @@ function reaction(data) {
       queryText = 'SELECT one.employee_id AS "Id", CONCAT(one.employee_firstname, " ", one.employee_lastname) AS "Name", role_title AS "Role", department_name AS "Department", CONCAT("$",role_salary) AS "Salary", CONCAT(two.employee_firstname, " ", two.employee_lastname) AS "Manager" FROM employee one JOIN role ON one.role_id = role.role_id JOIN department ON role.department_id = department.department_id LEFT JOIN employee two ON one.manager_id = two.employee_id ORDER BY one.employee_id ASC';
       queryView(queryText);
       break;
+
+    case "View employees by manager":
+      db.query("SELECT employee_id, employee_firstname, employee_lastname FROM employee", function (error, results) {
+        let listOfEmployees = {};
+        results.forEach(element => {
+          listOfEmployees[element.employee_firstname + " " + element.employee_lastname] = element.employee_id; 
+        });
+        questionViewEmpByMgr[0].choices = Object.keys(listOfEmployees);
+        inquirer.prompt(questionViewEmpByMgr) // Prompt to ask user to choose a manager
+        .then((response) => {
+          queryText = `SELECT one.employee_id AS "Id", CONCAT(one.employee_firstname, " ", one.employee_lastname) AS "Name", role_title AS "Role", department_name AS "Department", CONCAT("$",role_salary) AS "Salary", CONCAT(two.employee_firstname, " ", two.employee_lastname) AS "Manager" FROM employee one JOIN role ON one.role_id = role.role_id JOIN department ON role.department_id = department.department_id LEFT JOIN employee two ON one.manager_id = two.employee_id WHERE one.manager_id = ${listOfEmployees[response.manager]} ORDER BY one.employee_id ASC`;
+          queryView(queryText);
+        });
+      });
+      break;
+    
+    // case "View employees by department":
+
+    //   break;
     
     case "Add a department":
       inquirer.prompt(questionAddDepartment) // Prompt to ask user to input data for new department
