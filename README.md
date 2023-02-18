@@ -16,6 +16,7 @@ This application enables you to create and manage employment related data using 
 [CONTRIBUTION](#contribution)<br>
 [TESTS](#tests)<br>
 [SCREENSHOTS](#screenshots)<br>
+[DEMO](#demo)<br>
 [QUESTIONS](#questions)
 
 ## INSTALLATION 
@@ -60,6 +61,10 @@ Copy the following files and folder to your computer and test this application:
 ## SCREENSHOTS
 ![image](https://user-images.githubusercontent.com/121307266/219885075-c96eae61-6122-489e-9bc2-903f487dd004.png)
 ![image](https://user-images.githubusercontent.com/121307266/219885090-e8ccbcd4-892c-4942-b9ee-af84dd14e394.png)
+
+## DEMO
+[Demo video](https://drive.google.com/file/d/14S-iRzW-uj3V_bIrqswidJkC7BuBzU6N/view)<br>
+[Demo video (another link)](https://watch.screencastify.com/v/u2AAt1kFMxkBHBiQj27U)
 
 ## QUESTIONS 
 If you have any questions, feel free to reach out to me!<br>
