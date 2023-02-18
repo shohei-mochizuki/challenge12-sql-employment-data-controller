@@ -24,12 +24,15 @@ This application requires 1.JavaScript, 2.Node.JS (version 16, not the latest) a
 * console.table
 
 ## USAGE 
-On the landing page, click the "Get Started" button to go to the note section. Once you're in the note section, you can see saved notes on the left-hand side of the page and new note creation section on the right-hand side.
-* To delete a note, click a red bin icon in the list. 
-* To see the details of a saved note, click the note title in the list. 
-* To make a new note, click the + icon at the top right corner.
-* To save a new note, type a note title and its content (text) in the form and click the file icon at the top right corner. 
-* To go back to the landing page, click the webpage title "Note Taker" at the top left corner.
+### Step 1. Data Preparation 
+First you need to load your data onto MySQL server. Go to Command Line and go to the folder of this application which contains db folder and index.js. Once you're in the folder, type "mysql -u root" (if you get a server connection error, type "mysql.server start" first) and then you're ready to use MySQL. In MySQL, type "source db/schema.sql;" first and then "source db/seeds.sql;". Now these base data are available in MySQL and you can exit MySQL by typing "quit" and hit Enter button.  
+
+### Step 2. Data Management
+In Command Line, type "node index.js". It takes you to the list of actions. Choose the option you'd like. Please keep in mind the following rules:
+* Name of a department cannot be longer than 30 characters
+* Name of a role/title cannot be longer than 30 characters
+* First and last names of an employee cannot be longer than 30 characters
+* Salary should be a number. Please do not input "k" or "$" marks
 
 ## LICENSE 
 MIT:<br>
