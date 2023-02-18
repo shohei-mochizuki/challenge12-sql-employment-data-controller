@@ -107,6 +107,13 @@ const questionViewEmpByMgr = [ // This set of questions will be asked when a use
     choices: []},
   ];
 
+const questionViewEmpByDep = [ // This set of questions will be asked when a user choose "View employees by department"
+  {type: 'list',
+    message: 'Choose a department',
+    name: 'department',
+    choices: []},
+  ];
+  
 
 // 2. FUNCTIONS  
 // 2-1. Function of viewing data from mySQL
@@ -186,9 +193,20 @@ function reaction(data) {
       });
       break;
     
-    // case "View employees by department":
-
-    //   break;
+    case "View employees by department":
+      db.query("SELECT department_id, department_name FROM department", function (error, results) {
+        let listOfDepartments = {};
+        results.forEach(element => {
+          listOfEmployees[element.department_name] = element.department_id; 
+        });
+        questionViewEmpByDep[0].choices = Object.keys(listOfDepartments);
+        inquirer.prompt(questionViewEmpByDep) // Prompt to ask user to choose a manager
+        .then((response) => {
+          queryText = `SELECT one.employee_id AS "Id", CONCAT(one.employee_firstname, " ", one.employee_lastname) AS "Name", role_title AS "Role", department_name AS "Department", CONCAT("$",role_salary) AS "Salary", CONCAT(two.employee_firstname, " ", two.employee_lastname) AS "Manager" FROM employee one JOIN role ON one.role_id = role.role_id JOIN department ON role.department_id = department.department_id LEFT JOIN employee two ON one.manager_id = two.employee_id WHERE department.department_id = ${listOfDepartments[response.department]} ORDER BY one.employee_id ASC`;
+          queryView(queryText);
+        });
+      });
+      break;
     
     case "Add a department":
       inquirer.prompt(questionAddDepartment) // Prompt to ask user to input data for new department
