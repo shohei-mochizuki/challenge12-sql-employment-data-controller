@@ -23,11 +23,15 @@ const listOptionsInitial = ["View all departments",
 "View all employees",
 "View employees by manager", 
 "View employees by department", 
-"Add a department", 
-"Add a role", 
-"Add an employee", 
-"Update an employee's role",
-"Update an employee's manager",
+"View total budget by department",
+"+ Add a department", 
+"+ Add a role", 
+"+ Add an employee", 
+"▲ Update an employee's role",
+"▲ Update an employee's manager",
+"✖︎ Delete a department",
+"✖︎ Delete a role",
+"✖︎ Delete an employee",
 "Quit"];
 
 // Create arrays of questions for user input
@@ -100,20 +104,34 @@ const questionUpdateEmployeeManager = [ // This set of questions will be asked w
     choices: []},
   ];
 
-const questionViewEmpByMgr = [ // This set of questions will be asked when a user choose "View employees by manager"
+const selectManager = [ // This set of questions will be asked when a user choose "View employees by manager"
   {type: 'list',
     message: 'Choose a manager',
     name: 'manager',
     choices: []},
   ];
 
-const questionViewEmpByDep = [ // This set of questions will be asked when a user choose "View employees by department"
+const selectDepartment = [ // This set of questions will be asked when a user choose "View employees by department", "View total budget by department" or "Delete a department
   {type: 'list',
     message: 'Choose a department',
     name: 'department',
     choices: []},
   ];
   
+const selectRole = [ // This set of questions will be asked when a user choose "View employees by department" or "Delete a role"
+  {type: 'list',
+    message: 'Choose a role',
+    name: 'role',
+    choices: []},
+  ];
+
+  const selectEmployee = [ // This set of questions will be asked when a user choose "View employees by department" or "Delete an employee"
+  {type: 'list',
+    message: 'Choose an employee',
+    name: 'employee',
+    choices: []},
+  ];
+
 
 // 2. FUNCTIONS  
 // 2-1. Function of viewing data from mySQL
@@ -147,7 +165,6 @@ function queryAdd (queryText) {
 // 2-3. Function of updating data in mySQL
 function queryUpdate (queryText) {
   db.query(queryText, function (err, results) {
-    console.log(results);
     if (results) {
       console.log(`Successfully updated the data!
 
@@ -158,6 +175,7 @@ function queryUpdate (queryText) {
     };
   })
 };
+
 
 // 2-4 Switch function depending on what user wants to do
 function reaction(data) {
@@ -184,8 +202,8 @@ function reaction(data) {
         results.forEach(element => {
           listOfEmployees[element.employee_firstname + " " + element.employee_lastname] = element.employee_id; 
         });
-        questionViewEmpByMgr[0].choices = Object.keys(listOfEmployees);
-        inquirer.prompt(questionViewEmpByMgr) // Prompt to ask user to choose a manager
+        selectManager[0].choices = Object.keys(listOfEmployees);
+        inquirer.prompt(selectManager) // Prompt to ask user to choose a manager
         .then((response) => {
           queryText = `SELECT one.employee_id AS "Id", CONCAT(one.employee_firstname, " ", one.employee_lastname) AS "Name", role_title AS "Role", department_name AS "Department", CONCAT("$",role_salary) AS "Salary", CONCAT(two.employee_firstname, " ", two.employee_lastname) AS "Manager" FROM employee one JOIN role ON one.role_id = role.role_id JOIN department ON role.department_id = department.department_id LEFT JOIN employee two ON one.manager_id = two.employee_id WHERE one.manager_id = ${listOfEmployees[response.manager]} ORDER BY one.employee_id ASC`;
           queryView(queryText);
@@ -199,8 +217,8 @@ function reaction(data) {
         results.forEach(element => {
           listOfDepartments[element.department_name] = element.department_id; 
         });
-        questionViewEmpByDep[0].choices = Object.keys(listOfDepartments);
-        inquirer.prompt(questionViewEmpByDep) // Prompt to ask user to choose a manager
+        selectDepartment[0].choices = Object.keys(listOfDepartments);
+        inquirer.prompt(selectDepartment) // Prompt to ask user to choose a manager
         .then((response) => {
           queryText = `SELECT one.employee_id AS "Id", CONCAT(one.employee_firstname, " ", one.employee_lastname) AS "Name", role_title AS "Role", department_name AS "Department", CONCAT("$",role_salary) AS "Salary", CONCAT(two.employee_firstname, " ", two.employee_lastname) AS "Manager" FROM employee one JOIN role ON one.role_id = role.role_id JOIN department ON role.department_id = department.department_id LEFT JOIN employee two ON one.manager_id = two.employee_id WHERE department.department_id = ${listOfDepartments[response.department]} ORDER BY one.employee_id ASC`;
           queryView(queryText);
@@ -208,7 +226,7 @@ function reaction(data) {
       });
       break;
     
-    case "Add a department":
+    case "+ Add a department":
       inquirer.prompt(questionAddDepartment) // Prompt to ask user to input data for new department
         .then((response) => {
           queryText = `INSERT INTO department (department_name) VALUES ("${response.new_department}")`
@@ -216,7 +234,7 @@ function reaction(data) {
         })
       break;
 
-    case "Add a role":
+    case "+ Add a role":
       db.query("SELECT * FROM department", function (err, results) {
         var listOfDepartments = {};
         results.forEach(element => {
@@ -231,7 +249,7 @@ function reaction(data) {
       });
       break;
 
-    case "Add an employee":
+    case "+ Add an employee":
       db.query("SELECT role_id, role_title FROM role", function (err, res) {
         let listOfRoles = {};
         res.forEach(e => {
@@ -253,7 +271,7 @@ function reaction(data) {
       });
       break;
       
-    case "Update an employee's role":
+    case "▲ Update an employee's role":
       db.query("SELECT employee_id, employee_firstname, employee_lastname FROM employee", function (error, results) {
         let listOfEmployees = {};
         results.forEach(element => {
@@ -275,7 +293,7 @@ function reaction(data) {
       });
       break;
 
-      case "Update an employee's manager":
+      case "▲ Update an employee's manager":
         db.query("SELECT employee_id, employee_firstname, employee_lastname FROM employee", function (error, results) {
           let listOfEmployees = {};
           results.forEach(element => {
@@ -290,6 +308,44 @@ function reaction(data) {
           });
         });
         break;
+
+      case "✖︎ Delete a department":
+        db.query("SELECT department_id, department_name FROM department", function (error, results) {
+          let listOfDepartments = {};
+          results.forEach(element => {
+            listOfDepartments[element.department_name] = element.department_id; 
+          });
+          selectDepartment[0].choices = Object.keys(listOfDepartments);
+          inquirer.prompt(selectDepartment) // Prompt to ask user to choose a manager
+          .then((response) => {
+            queryText = `DELETE FROM department WHERE department_id = ${listOfDepartments[response.department]}`;
+            queryUpdate(queryText);
+          });
+        });
+        break;
+
+        case "✖︎ Delete a role":
+          db.query("SELECT role_id, role_title FROM role", function (error, results) {
+            let listOfRoles = {};
+            results.forEach(element => {
+              listOfRoles[element.role_title] = element.role_id; 
+            });
+            selectRole[0].choices = Object.keys(listOfRoles);
+            inquirer.prompt(selectRole) // Prompt to ask user to choose a manager
+            .then((response) => {
+              queryText = `DELETE FROM role WHERE role_id = ${listOfRoles[response.role]}`;
+              queryUpdate(queryText);
+            });
+          });
+          break;
+
+
+
+// "Delete a department",
+// "Delete a role",
+// "Delete an employee",
+// "Calculate total budget by department",
+
 
     case "Quit":
       console.log("Bye!");
