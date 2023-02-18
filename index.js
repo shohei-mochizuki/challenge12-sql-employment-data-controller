@@ -87,41 +87,28 @@ const questionUpdateEmployee = [
     choices: listRoles},
   ];
 
-
 // Function
 function reaction(data) {
   switch (data.action) {
-    case "View all departments": 
-      const viewDepartments = new Promise((resolve, reject) => {
-        db.query('SELECT department_id AS "Id", department_name AS "Department" FROM department', function (err, results) {
-          if (results) {
-            console.table(results);
-            resolve(results);
-          } else {
-            console.log(err)
-            reject(err);
-          }
-        });
-      });
-      viewDepartments.then(() => {
-        init();
-      });
+    case "View all departments":
+      queryText = 'SELECT department_id AS "Id", department_name AS "Department" FROM department';
+      db.query(queryText, function (err, results) {
+        if (results) {
+          console.table(results);
+          init()
+        } else {
+          console.error(err)
+        };
+      })
       break;
     // When 
     case "View all roles":
-      const viewRoles = new Promise((resolve, reject) => {
+      // const viewRoles = new Promise((resolve, reject) => {
         db.query('SELECT role_id AS "Id", role_title AS "Role", department_name AS "Department", role_salary AS "Salary" FROM role JOIN department ON role.department_id = department.department_id', function (err, results) {
           if (results) {
             console.table(results);
-            resolve(results);
-          } else {
-            console.log(err)
-            reject(err);
-          }
-        });
-      });
-      viewRoles.then(() => {
         init();
+          }
       });
       break;
     // When
@@ -143,14 +130,12 @@ function reaction(data) {
       break;
           // When
     case "Add a department":
-      console.log("You'll be able to add a department soon")
       inquirer.prompt(questionAddDepartment)
         .then((response) => {
           db.query('INSERT INTO department (department_name) VALUES (?)', response.department, function (err, results) {
             console.log(results);
           })
         })
-        .then(() => init());
       break;
           // When
     case "Add a role":
