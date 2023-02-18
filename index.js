@@ -129,7 +129,7 @@ function reaction(data) {
         questionAddRole[2].choices = Object.keys(listOfDepartments);
         inquirer.prompt(questionAddRole)
         .then((response) => { // role_title, role_salary, role_department
-          queryText = `INSERT INTO role (role_title, role_salary, department_id) VALUES (${response.role_title}, ${response.role_salary}, ${listOfDepartments[response.role_department]})`;
+          queryText = `INSERT INTO role (role_title, role_salary, department_id) VALUES ("${response.role_title}", ${response.role_salary}, ${listOfDepartments[response.role_department]})`;
           queryAction(queryText);
         });
       })
