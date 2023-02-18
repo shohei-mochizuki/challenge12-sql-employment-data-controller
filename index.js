@@ -102,57 +102,37 @@ function queryAction (queryText) {
 function reaction(data) {
   switch (data.action) {
     case "View all departments":
-      query = 'SELECT department_id AS "Id", department_name AS "Department" FROM department';
-      queryAction(query);
-      // db.query(queryText, function (err, results) {
-      //   if (results) {
-      //     console.table(results);
-      //     init()
-      //   } else {
-      //     console.error(err)
-      //   };
-      // })
+      queryText = 'SELECT department_id AS "Id", department_name AS "Department" FROM department';
+      queryAction(queryText);
       break;
     // When 
     case "View all roles":
-      // const viewRoles = new Promise((resolve, reject) => {
-        db.query('SELECT role_id AS "Id", role_title AS "Role", department_name AS "Department", role_salary AS "Salary" FROM role JOIN department ON role.department_id = department.department_id', function (err, results) {
-          if (results) {
-            console.table(results);
-        init();
-          }
-      });
+      queryText = 'SELECT role_id AS "Id", role_title AS "Role", department_name AS "Department", role_salary AS "Salary" FROM role JOIN department ON role.department_id = department.department_id';
+      queryAction(queryText);
       break;
     // When
     case "View all employees":
-      const viewEmployees = new Promise((resolve, reject) => {
-        db.query('SELECT one.employee_id AS "Id", CONCAT(one.employee_firstname, " ", one.employee_lastname) AS "Name", role_title AS "Role", department_name AS "Department", role_salary AS "Salary", CONCAT(two.employee_firstname, " ", two.employee_lastname) AS "Manager" FROM employee one JOIN role ON one.role_id = role.role_id JOIN department ON role.department_id = department.department_id LEFT JOIN employee two ON one.manager_id = two.employee_id', function (err, results) {
-          if (results) {
-            console.table(results);
-            resolve(results);
-          } else {
-            console.log(err)
-            reject(err);
-          }
-        });
-      });
-      viewEmployees.then(() => {
-        init();
-      });
+      queryText = 'SELECT one.employee_id AS "Id", CONCAT(one.employee_firstname, " ", one.employee_lastname) AS "Name", role_title AS "Role", department_name AS "Department", role_salary AS "Salary", CONCAT(two.employee_firstname, " ", two.employee_lastname) AS "Manager" FROM employee one JOIN role ON one.role_id = role.role_id JOIN department ON role.department_id = department.department_id LEFT JOIN employee two ON one.manager_id = two.employee_id';
+      queryAction(queryText);
       break;
-          // When
+    // When
     case "Add a department":
       inquirer.prompt(questionAddDepartment)
         .then((response) => {
-          db.query('INSERT INTO department (department_name) VALUES (?)', response.department, function (err, results) {
-            console.log(results);
-          })
+          queryText = `INSERT INTO department (department_name) VALUES (${response.department})`
+          queryAction(queryText);
+          // db.query('INSERT INTO department (department_name) VALUES (?)', response.department, function (err, results) {
+          //   console.log(results);
+          // })
         })
       break;
           // When
     case "Add a role":
-      console.log("You'll be able to add a role soon")
-      .then(() => init());
+      
+    inquirer.prompt(questionAddRole)
+        .then((response) => { role_title, role_salary, role_department
+          queryText = `INSERT INTO role (department_name) VALUES (${response.department})`
+          queryAction(queryText);
       break;
           // When
     case "Add an employee":
