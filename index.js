@@ -187,12 +187,12 @@ function reaction(data) {
       break;
 
     case "View all roles":
-      queryText = 'SELECT role_id AS "Id", role_title AS "Role", department_name AS "Department", CONCAT("$",role_salary) AS "Salary" FROM role JOIN department ON role.department_id = department.department_id ORDER BY role_id ASC';
+      queryText = 'SELECT role_id AS "Id", role_title AS "Role", department_name AS "Department", CONCAT("$",role_salary) AS "Salary" FROM role LEFT JOIN department ON role.department_id = department.department_id ORDER BY role_id ASC';
       queryView(queryText);
       break;
     
     case "View all employees":
-      queryText = 'SELECT one.employee_id AS "Id", CONCAT(one.employee_firstname, " ", one.employee_lastname) AS "Name", role_title AS "Role", department_name AS "Department", CONCAT("$",role_salary) AS "Salary", CONCAT(two.employee_firstname, " ", two.employee_lastname) AS "Manager" FROM employee one JOIN role ON one.role_id = role.role_id JOIN department ON role.department_id = department.department_id LEFT JOIN employee two ON one.manager_id = two.employee_id ORDER BY one.employee_id ASC';
+      queryText = 'SELECT one.employee_id AS "Id", CONCAT(one.employee_firstname, " ", one.employee_lastname) AS "Name", role_title AS "Role", department_name AS "Department", CONCAT("$",role_salary) AS "Salary", CONCAT(two.employee_firstname, " ", two.employee_lastname) AS "Manager" FROM employee one LEFT JOIN role ON one.role_id = role.role_id LEFT JOIN department ON role.department_id = department.department_id LEFT JOIN employee two ON one.manager_id = two.employee_id ORDER BY one.employee_id ASC';
       queryView(queryText);
       break;
 
@@ -205,7 +205,7 @@ function reaction(data) {
         selectManager[0].choices = Object.keys(list);
         inquirer.prompt(selectManager) // Prompt to ask user to choose a manager
         .then((response) => {
-          queryText = `SELECT one.employee_id AS "Id", CONCAT(one.employee_firstname, " ", one.employee_lastname) AS "Name", role_title AS "Role", department_name AS "Department", CONCAT("$",role_salary) AS "Salary", CONCAT(two.employee_firstname, " ", two.employee_lastname) AS "Manager" FROM employee one JOIN role ON one.role_id = role.role_id JOIN department ON role.department_id = department.department_id LEFT JOIN employee two ON one.manager_id = two.employee_id WHERE one.manager_id = ${list[response.manager]} ORDER BY one.employee_id ASC`;
+          queryText = `SELECT one.employee_id AS "Id", CONCAT(one.employee_firstname, " ", one.employee_lastname) AS "Name", role_title AS "Role", department_name AS "Department", CONCAT("$",role_salary) AS "Salary", CONCAT(two.employee_firstname, " ", two.employee_lastname) AS "Manager" FROM employee one LEFT JOIN role ON one.role_id = role.role_id LEFT JOIN department ON role.department_id = department.department_id LEFT JOIN employee two ON one.manager_id = two.employee_id WHERE one.manager_id = ${list[response.manager]} ORDER BY one.employee_id ASC`;
           queryView(queryText);
         });
       });
@@ -220,14 +220,14 @@ function reaction(data) {
         selectDepartment[0].choices = Object.keys(list);
         inquirer.prompt(selectDepartment) // Prompt to ask user to choose a department
         .then((response) => {
-          queryText = `SELECT one.employee_id AS "Id", CONCAT(one.employee_firstname, " ", one.employee_lastname) AS "Name", role_title AS "Role", department_name AS "Department", CONCAT("$",role_salary) AS "Salary", CONCAT(two.employee_firstname, " ", two.employee_lastname) AS "Manager" FROM employee one JOIN role ON one.role_id = role.role_id JOIN department ON role.department_id = department.department_id LEFT JOIN employee two ON one.manager_id = two.employee_id WHERE department.department_id = ${list[response.department]} ORDER BY one.employee_id ASC`;
+          queryText = `SELECT one.employee_id AS "Id", CONCAT(one.employee_firstname, " ", one.employee_lastname) AS "Name", role_title AS "Role", department_name AS "Department", CONCAT("$",role_salary) AS "Salary", CONCAT(two.employee_firstname, " ", two.employee_lastname) AS "Manager" FROM employee one LEFT JOIN role ON one.role_id = role.role_id LEFT JOIN department ON role.department_id = department.department_id LEFT JOIN employee two ON one.manager_id = two.employee_id WHERE department.department_id = ${list[response.department]} ORDER BY one.employee_id ASC`;
           queryView(queryText);
         });
       });
       break;
     
     case "View total budget by department":
-      queryText = `SELECT department.department_id AS "Id", department.department_name AS "Department", SUM(role.role_salary) AS "Budget", COUNT(employee.employee_id) AS "No. of employees" FROM employee JOIN role ON employee.role_id = role.role_id JOIN department ON role.department_id = department.department_id GROUP BY department.department_id ORDER BY SUM(role.role_salary) DESC`;
+      queryText = `SELECT department.department_id AS "Id", department.department_name AS "Department", SUM(role.role_salary) AS "Budget", COUNT(employee.employee_id) AS "No. of employees" FROM employee LEFT JOIN role ON employee.role_id = role.role_id LEFT JOIN department ON role.department_id = department.department_id GROUP BY department.department_id ORDER BY SUM(role.role_salary) DESC`;
       queryView(queryText);
       break;
 
