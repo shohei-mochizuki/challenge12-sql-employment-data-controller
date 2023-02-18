@@ -1,8 +1,9 @@
 // Include packages needed for this application
 const inquirer = require('inquirer');
 const MaxLengthInputPrompt = require('inquirer-maxlength-input-prompt'); // This is an add-on to limit the number of input letters
+inquirer.registerPrompt('maxlength-input', MaxLengthInputPrompt);
 const mysql = require('mysql2');
-inquirer.registerPrompt('maxlength-input', MaxLengthInputPrompt)
+const cTable = require('console.table');
 
 // Create a connection to mySQL
 let db = mysql.createConnection(
@@ -36,7 +37,7 @@ const questionInitial = [ // This set of questions will be asked at the begining
 const questionAddDepartment = [ // This set of questions will be asked when a user choose "Add a department"
   {type: 'maxlength-input',
    message: 'What is the name of the department?',
-   name: 'department',
+   name: 'new_department',
    maxLength: 30},
   ];
 
@@ -89,7 +90,21 @@ const questionUpdateEmployee = [ // This set of questions will be asked when a u
 function queryView (queryText) {
   db.query(queryText, function (err, results) {
     if (results) {
+      console.log(results);
       console.table(results);
+      init()
+    } else {
+      console.error(err)
+    };
+  })
+};
+
+// Function of adding data in mySQL
+function queryAdd (queryText) {
+  db.query(queryText, function (err, results) {
+    if (results) {
+      console.log(`Successfully added!`);
+      console.log(results);
       init()
     } else {
       console.error(err)
@@ -118,8 +133,8 @@ function reaction(data) {
     case "Add a department":
       inquirer.prompt(questionAddDepartment)
         .then((response) => {
-          queryText = `INSERT INTO department (department_name) VALUES ("${response.department}")`
-          queryAction(queryText);
+          queryText = `INSERT INTO department (department_name) VALUES ("${response.new_department}")`
+          queryAdd(queryText);
         })
       break;
           // When
@@ -133,7 +148,7 @@ function reaction(data) {
         inquirer.prompt(questionAddRole)
         .then((response) => {
           queryText = `INSERT INTO role (role_title, role_salary, department_id) VALUES ("${response.role_title}", ${response.role_salary}, ${listOfDepartments[response.role_department]})`;
-          queryAction(queryText);
+          queryAdd(queryText);
         })
       });
       break;
@@ -154,7 +169,7 @@ function reaction(data) {
           inquirer.prompt(questionAddEmployee)
           .then((response) => {
             queryText = `INSERT INTO employee (employee_firstname, employee_lastname, role_id, manager_id) VALUES ("${response.employee_firstname}", "${response.employee_lastname}", ${listOfRoles[response.employee_role]}, ${listOfEmployees[response.employee_manager]})`;
-            queryAction(queryText);
+            queryAdd(queryText);
           });
         });
       });
